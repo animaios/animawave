@@ -1,5 +1,5 @@
 // Shortwave - mod.rs
-// Copyright (C) 2021  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2024  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,25 +15,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 static STATION_SEARCH: &str = "json/stations/search";
-static STATION_BY_UUID: &str = "json/stations/byuuid/";
+static STATION_BY_UUID: &str = "json/stations/byuuid";
 static STATS: &str = "json/stats";
 
-mod client;
+pub mod client;
+mod cover_loader;
 mod error;
-mod favicon_downloader;
-mod object;
 mod station;
 mod station_metadata;
+mod station_model;
 mod station_request;
-mod station_url;
+mod station_sorter;
 mod stats;
 
-pub use client::Client;
+pub use cover_loader::CoverLoader;
 pub use error::Error;
-pub use favicon_downloader::FaviconDownloader;
-pub use object::Object;
 pub use station::SwStation;
 pub use station_metadata::StationMetadata;
+pub use station_model::SwStationModel;
 pub use station_request::StationRequest;
-pub use station_url::StationUrl;
+pub use station_sorter::{SwStationSorter, SwStationSorting, SwStationSortingType};
 pub use stats::Stats;

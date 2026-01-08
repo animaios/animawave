@@ -1,5 +1,5 @@
 // Shortwave - station_row.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2024  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,47 +14,49 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-use futures_util::future::FutureExt;
-use glib::{clone, Sender};
+use std::cell::RefCell;
+
+use adw::subclass::prelude::*;
+use glib::clone;
+use glib::subclass;
+use glib::Properties;
 use gtk::prelude::*;
-use gtk::subclass::prelude::*;
 use gtk::{glib, CompositeTemplate};
 use inflector::Inflector;
-use once_cell::unsync::OnceCell;
 
-use crate::api::{FaviconDownloader, SwStation};
-use crate::app::Action;
-use crate::ui::{FaviconSize, StationFavicon};
+use crate::api::StationMetadata;
+use crate::api::SwStation;
+use crate::ui::SwStationCover;
+use crate::SwApplication;
 
 mod imp {
-    use glib::subclass;
-
     use super::*;
 
-    #[derive(Debug, Default, CompositeTemplate)]
+    #[derive(Debug, Default, CompositeTemplate, Properties)]
     #[template(resource = "/de/haeckerfelix/Shortwave/gtk/station_row.ui")]
+    #[properties(wrapper_type = super::SwStationRow)]
     pub struct SwStationRow {
         #[template_child]
-        pub station_label: TemplateChild<gtk::Label>,
+        station_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub subtitle_label: TemplateChild<gtk::Label>,
+        subtitle_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub favicon_box: TemplateChild<gtk::Box>,
+        station_cover: TemplateChild<SwStationCover>,
         #[template_child]
-        pub local_image: TemplateChild<gtk::Image>,
+        local_image: TemplateChild<gtk::Image>,
         #[template_child]
-        pub orphaned_image: TemplateChild<gtk::Image>,
+        orphaned_image: TemplateChild<gtk::Image>,
         #[template_child]
-        pub play_button: TemplateChild<gtk::Button>,
+        play_button: TemplateChild<gtk::Button>,
 
-        pub station: OnceCell<SwStation>,
-        pub sender: OnceCell<Sender<Action>>,
+        #[property(get, set=Self::set_station)]
+        station: RefCell<Option<SwStation>>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for SwStationRow {
         const NAME: &'static str = "SwStationRow";
-        type ParentType = gtk::FlowBoxChild;
+        type ParentType = adw::Bin;
         type Type = super::SwStationRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -66,83 +68,74 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for SwStationRow {}
+    #[glib::derived_properties]
+    impl ObjectImpl for SwStationRow {
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            self.play_button.connect_clicked(clone!(
+                #[weak(rename_to = obj)]
+                self.obj(),
+                move |_| {
+                    glib::spawn_future_local(clone!(
+                        #[weak]
+                        obj,
+                        async move {
+                            if let Some(station) = obj.station() {
+                                let player = SwApplication::default().player();
+                                player.set_station(station).await;
+                                player.start_playback().await;
+                            }
+                        }
+                    ));
+                }
+            ));
+        }
+    }
 
     impl WidgetImpl for SwStationRow {}
 
-    impl FlowBoxChildImpl for SwStationRow {}
+    impl BinImpl for SwStationRow {}
+
+    impl SwStationRow {
+        fn set_station(&self, station: Option<&SwStation>) {
+            if let Some(station) = station {
+                station.connect_metadata_notify(clone!(
+                    #[weak(rename_to = imp)]
+                    self,
+                    move |s| {
+                        imp.set_metadata(s.metadata());
+                    }
+                ));
+                self.set_metadata(station.metadata());
+            }
+
+            *self.station.borrow_mut() = station.cloned();
+        }
+
+        fn set_metadata(&self, metadata: StationMetadata) {
+            self.station_label.set_text(&metadata.name);
+            let mut subtitle = metadata.country.to_title_case();
+
+            if subtitle.is_empty() {
+                subtitle = metadata.tags;
+            } else if !metadata.tags.is_empty() {
+                subtitle = format!("{} · {}", subtitle, metadata.formatted_tags());
+            }
+
+            self.subtitle_label.set_text(&subtitle);
+            self.subtitle_label.set_visible(!subtitle.is_empty());
+        }
+    }
 }
 
 glib::wrapper! {
     pub struct SwStationRow(ObjectSubclass<imp::SwStationRow>)
-        @extends gtk::Widget, gtk::FlowBoxChild;
+        @extends gtk::Widget, adw::Bin;
 }
 
 impl SwStationRow {
-    pub fn new(sender: Sender<Action>, station: SwStation) -> Self {
-        let row = glib::Object::new::<Self>(&[]).unwrap();
-
-        let imp = row.imp();
-        imp.sender.set(sender).unwrap();
-        imp.station.set(station).unwrap();
-
-        row.setup_widgets();
-        row.setup_signals();
-
-        row
-    }
-
-    fn setup_signals(&self) {
-        let imp = self.imp();
-
-        // play_button
-        imp.play_button.connect_clicked(clone!(@strong imp.sender as sender, @strong imp.station as station => move |_| {
-            send!(sender.get().unwrap(), Action::PlaybackSetStation(Box::new(station.get().unwrap().clone())));
-        }));
-    }
-
-    fn setup_widgets(&self) {
-        let imp = self.imp();
-
-        // Set row information
-        let station = imp.station.get().unwrap();
-        imp.station_label.set_text(&station.metadata().name);
-
-        // Set subtitle
-        let metadata = station.metadata();
-        let mut subtitle = metadata.country.to_title_case();
-
-        if subtitle.is_empty() {
-            subtitle = metadata.tags;
-        } else if !metadata.tags.is_empty() {
-            subtitle = format!("{} · {}", subtitle, metadata.formatted_tags());
-        }
-
-        imp.subtitle_label.set_text(&subtitle);
-        imp.subtitle_label.set_visible(!subtitle.is_empty());
-
-        imp.local_image.set_visible(station.is_local());
-        imp.orphaned_image.set_visible(station.is_orphaned());
-
-        // Download & set station favicon
-        let station_favicon = StationFavicon::new(FaviconSize::Small);
-        imp.favicon_box.append(&station_favicon.widget);
-
-        if let Some(pixbuf) = station.favicon() {
-            station_favicon.set_pixbuf(&pixbuf);
-        } else if let Some(favicon) = station.metadata().favicon.as_ref() {
-            let fut = FaviconDownloader::download(favicon.clone(), FaviconSize::Small as i32).map(
-                move |pixbuf| {
-                    if let Ok(pixbuf) = pixbuf {
-                        station_favicon.set_pixbuf(&pixbuf)
-                    }
-                },
-            );
-            spawn!(fut);
-        }
-    }
-
-    pub fn station(&self) -> SwStation {
-        self.imp().station.get().unwrap().clone()
+    pub fn new(station: &SwStation) -> Self {
+        glib::Object::builder().property("station", station).build()
     }
 }

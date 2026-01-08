@@ -1,5 +1,5 @@
 // Shortwave - models.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2023  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+use gtk::prelude::*;
+
 use super::schema::*;
 use crate::api::SwStation;
 
 /// Representation of a station within the database.
 #[derive(Queryable, Insertable, Debug, Clone)]
-#[table_name = "library"]
+#[diesel(table_name = library)]
 pub struct StationEntry {
     /// Unique ID that corresponds to the RadioBrowser stationuuid for non-local
     /// stations.
@@ -31,7 +33,7 @@ pub struct StationEntry {
     /// Serialized station metadata. For local stations, this is mandatory.
     pub data: Option<String>,
 
-    /// Binary blob containing an optional local station favicon.
+    /// Binary blob containing an optional local station cover.
     pub favicon: Option<Vec<u8>>,
 }
 
@@ -40,15 +42,9 @@ impl StationEntry {
     pub fn for_station(station: &SwStation) -> Self {
         let metadata = station.metadata();
 
-        let favicon = if let Some(pixbuf) = station.favicon() {
-            if let Ok(data) = pixbuf.save_to_bufferv("png", &[]) {
-                Some(data)
-            } else {
-                None
-            }
-        } else {
-            None
-        };
+        let favicon = station
+            .custom_cover()
+            .map(|texture| texture.save_to_png_bytes().to_vec());
 
         Self {
             uuid: station.uuid(),

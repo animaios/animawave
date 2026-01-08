@@ -1,5 +1,5 @@
 // Shortwave - search_page.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2024  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,78 +14,52 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-use std::cell::RefCell;
-use std::rc::Rc;
+use std::cell::Cell;
 
+use adw::prelude::*;
 use adw::subclass::prelude::*;
-use futures_util::FutureExt;
-use glib::{clone, subclass, Sender};
-use gtk::prelude::*;
-use gtk::{gio, glib, CompositeTemplate};
-use once_cell::unsync::OnceCell;
-use url::Url;
+use glib::{clone, subclass};
+use gtk::{glib, CompositeTemplate};
+use rand::seq::SliceRandom;
 
-use crate::api::{Client, StationRequest};
-use crate::app::Action;
-use crate::i18n::*;
-use crate::ui::{SwApplicationWindow, SwStationFlowBox};
+use crate::api::{client, Error, StationRequest, SwStation, SwStationModel};
+use crate::ui::{DisplayError, SwStationDialog, SwStationRow};
 
 mod imp {
     use super::*;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Default, Debug, CompositeTemplate)]
     #[template(resource = "/de/haeckerfelix/Shortwave/gtk/search_page.ui")]
     pub struct SwSearchPage {
         #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
+        search_entry: TemplateChild<gtk::SearchEntry>,
         #[template_child]
-        pub flowbox: TemplateChild<SwStationFlowBox>,
+        stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub search_entry: TemplateChild<gtk::SearchEntry>,
+        popular_flowbox: TemplateChild<gtk::FlowBox>,
         #[template_child]
-        pub sorting_button_content: TemplateChild<adw::ButtonContent>,
+        random_flowbox: TemplateChild<gtk::FlowBox>,
         #[template_child]
-        pub results_limit_box: TemplateChild<gtk::Box>,
+        search_gridview: TemplateChild<gtk::GridView>,
         #[template_child]
-        pub results_limit_label: TemplateChild<gtk::Label>,
+        failure_statuspage: TemplateChild<adw::StatusPage>,
 
-        pub search_action_group: gio::SimpleActionGroup,
+        popular_model: SwStationModel,
+        random_model: SwStationModel,
+        search_model: SwStationModel,
 
-        pub station_request: Rc<RefCell<StationRequest>>,
-        pub client: OnceCell<Client>,
-        pub timeout_id: Rc<RefCell<Option<glib::source::SourceId>>>,
-        pub sender: OnceCell<Sender<Action>>,
+        loaded: Cell<bool>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for SwSearchPage {
         const NAME: &'static str = "SwSearchPage";
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
         type Type = super::SwSearchPage;
-
-        fn new() -> Self {
-            let search_action_group = gio::SimpleActionGroup::new();
-            let station_request = Rc::new(RefCell::new(StationRequest::search_for_name(None, 250)));
-            let client = OnceCell::default();
-            let timeout_id = Rc::new(RefCell::new(None));
-
-            Self {
-                stack: TemplateChild::default(),
-                flowbox: TemplateChild::default(),
-                search_entry: TemplateChild::default(),
-                sorting_button_content: TemplateChild::default(),
-                results_limit_box: TemplateChild::default(),
-                results_limit_label: TemplateChild::default(),
-                search_action_group,
-                station_request,
-                client,
-                timeout_id,
-                sender: OnceCell::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &subclass::InitializingObject<Self>) {
@@ -94,204 +68,173 @@ mod imp {
     }
 
     impl ObjectImpl for SwSearchPage {
-        fn constructed(&self, obj: &Self::Type) {
-            obj.insert_action_group("search", Some(&self.search_action_group));
+        fn constructed(&self) {
+            // Discover view
+            let flowbox_widget_func = |s: &glib::Object| {
+                let station: &SwStation = s.downcast_ref().unwrap();
+                let row = SwStationRow::new(station);
+                let child = gtk::FlowBoxChild::new();
+                child.set_child(Some(&row));
+                child.into()
+            };
 
-            let max = self.station_request.borrow().limit.unwrap();
-            let text = ni18n_f(
-                "The number of results is limited to {} item. Try using a more specific search term.",
-                "The number of results is limited to {} items. Try using a more specific search term.",
-                max,
-                &[&max.to_string()],
-            );
-            self.results_limit_label.set_text(&text);
+            self.popular_flowbox
+                .bind_model(Some(&self.popular_model), flowbox_widget_func);
+            self.random_flowbox
+                .bind_model(Some(&self.random_model), flowbox_widget_func);
+
+            let child_activate_func = |flowbox: &gtk::FlowBox, child: &gtk::FlowBoxChild| {
+                let row = child.child().unwrap().downcast::<SwStationRow>().unwrap();
+                if let Some(station) = row.station() {
+                    let station_dialog = SwStationDialog::new(&station);
+                    station_dialog.present(Some(flowbox));
+                }
+            };
+
+            self.popular_flowbox
+                .connect_child_activated(child_activate_func);
+            self.random_flowbox
+                .connect_child_activated(child_activate_func);
+
+            // Search grid view
+            let model = gtk::NoSelection::new(Some(self.search_model.clone()));
+            self.search_gridview.set_model(Some(&model));
+
+            self.search_gridview
+                .connect_activate(|gv: &gtk::GridView, pos| {
+                    let model = gv.model().unwrap();
+                    let station = model.item(pos).unwrap().downcast::<SwStation>().unwrap();
+                    let station_dialog = SwStationDialog::new(&station);
+                    station_dialog.present(Some(gv));
+                });
+
+            self.stack.set_visible_child_name("spinner");
         }
     }
 
-    impl WidgetImpl for SwSearchPage {}
+    impl WidgetImpl for SwSearchPage {
+        fn map(&self) {
+            self.parent_map();
 
-    impl BinImpl for SwSearchPage {}
+            if !self.loaded.get() {
+                glib::spawn_future_local(clone!(
+                    #[weak(rename_to = imp)]
+                    self,
+                    async move {
+                        imp.refresh_discover_page().await;
+                    }
+                ));
+            }
+        }
+    }
+
+    impl NavigationPageImpl for SwSearchPage {}
+
+    #[gtk::template_callbacks]
+    impl SwSearchPage {
+        #[template_callback]
+        async fn refresh_discover_page(&self) {
+            self.stack.set_visible_child_name("spinner");
+
+            match self.load_discover_stations().await {
+                Ok(()) => {
+                    self.loaded.set(true);
+                    self.search_entry.set_sensitive(true);
+                    self.stack.set_visible_child_name("discover");
+                }
+                Err(e) => {
+                    self.stack.set_visible_child_name("failure");
+                    self.failure_statuspage
+                        .set_description(Some(&e.to_string()));
+                }
+            }
+        }
+
+        async fn load_discover_stations(&self) -> Result<(), Error> {
+            debug!("Update discover stations...");
+            let countrycode = Self::region_code().unwrap_or("GB".into());
+
+            // Popular stations
+            let request = StationRequest {
+                limit: Some(100),
+                order: Some("votes".into()),
+                reverse: Some(true),
+                countrycode: Some(countrycode.clone()),
+                ..Default::default()
+            };
+
+            let mut stations = client::station_request(request).await?;
+
+            // Anything more than 50k votes can be considered as botted spam
+            stations.retain(|s| s.metadata().votes < 50_000);
+
+            // Randomize the selection to avoid that always the same stations are visible
+            let stations = stations
+                .choose_multiple(&mut rand::thread_rng(), 12)
+                .cloned()
+                .collect::<Vec<SwStation>>();
+
+            self.popular_model.clear();
+            self.popular_model.add_stations(stations);
+
+            // Random stations
+            let request = StationRequest {
+                limit: Some(18),
+                order: Some("random".into()),
+                countrycode: Some(countrycode),
+                ..Default::default()
+            };
+
+            let stations = client::station_request(request).await?;
+            self.random_model.clear();
+            self.random_model.add_stations(stations);
+
+            Ok(())
+        }
+
+        #[template_callback]
+        async fn search_changed(&self) {
+            if !self.loaded.get() {
+                return;
+            }
+
+            let text = self.search_entry.text().trim().to_string();
+            let text = if text.is_empty() { None } else { Some(text) };
+
+            // Don't search if search entry is empty
+            if text.is_none() {
+                self.stack.set_visible_child_name("discover");
+                return;
+            }
+
+            let request = StationRequest::search_for_name(text, 1000);
+            self.stack.set_visible_child_name("spinner");
+
+            debug!("Search for: {:?}", request);
+            let res = client::station_request(request).await;
+            res.handle_error("Unable to search for stations");
+
+            if let Ok(stations) = res {
+                if stations.is_empty() {
+                    self.stack.set_visible_child_name("no-results");
+                } else {
+                    self.stack.set_visible_child_name("results");
+                }
+
+                self.search_model.clear();
+                self.search_model.add_stations(stations);
+            }
+        }
+
+        fn region_code() -> Option<String> {
+            let locale = sys_locale::get_locale()?;
+            let langtag = language_tags::LanguageTag::parse(&locale).ok()?;
+            langtag.region().map(|s| s.to_string())
+        }
+    }
 }
 
 glib::wrapper! {
     pub struct SwSearchPage(ObjectSubclass<imp::SwSearchPage>)
-        @extends gtk::Widget, adw::Bin;
-}
-
-impl SwSearchPage {
-    pub fn init(&self, sender: Sender<Action>) {
-        let imp = self.imp();
-        imp.sender.set(sender).unwrap();
-
-        self.setup_signals();
-        self.setup_gactions();
-    }
-
-    pub fn refresh_data(&self, server: &Url) {
-        let imp = self.imp();
-
-        if let Some(client) = imp.client.get() {
-            client.set_server(server.clone())
-        } else {
-            let client = Client::new(server.clone());
-
-            let sender = imp.sender.get().unwrap();
-            let model = &*client.model.clone();
-            imp.flowbox.init(model.clone(), sender.clone());
-
-            imp.client.set(client).unwrap();
-        }
-
-        self.update_search();
-    }
-
-    fn setup_signals(&self) {
-        let imp = self.imp();
-
-        imp.search_entry
-            .connect_search_changed(clone!(@weak self as this => move |entry| {
-                let imp = this.imp();
-                let text = entry.text().to_string();
-
-                let text = if text.is_empty() {
-                    None
-                }else{
-                    Some(text)
-                };
-
-                // Update station request and redo search
-                let station_request = StationRequest{
-                    name: text,
-                    ..imp.station_request.borrow().clone()
-                };
-                *imp.station_request.borrow_mut() = station_request;
-                this.update_search();
-            }));
-
-        self.connect_map(|this| {
-            let imp = this.imp();
-            imp.search_entry.grab_focus();
-            imp.search_entry.select_region(0, -1);
-        });
-    }
-
-    fn setup_gactions(&self) {
-        let imp = self.imp();
-        let variant_ty = Some(glib::VariantTy::new("s").unwrap());
-
-        let sorting_action =
-            gio::SimpleAction::new_stateful("sorting", variant_ty, &"Votes".to_variant());
-        imp.search_action_group.add_action(&sorting_action);
-        sorting_action.connect_change_state(clone!(@weak self as this => move |action, state|{
-            let imp = this.imp();
-            if let Some(state) = state{
-                action.set_state(state);
-                let order = state.str().unwrap();
-
-                let label = match order{
-                    "Name" => i18n("Name"),
-                    "Language" => i18n("Language"),
-                    "Country" => i18n("Country"),
-                    "State" => i18n("State"),
-                    "Votes" => i18n("Votes"),
-                    "Bitrate" => i18n("Bitrate"),
-                    _ => panic!("unknown sorting state change"),
-                };
-
-                imp.sorting_button_content.set_label(&label);
-
-                // Update station request and redo search
-                let station_request = StationRequest{
-                    order: Some(order.to_lowercase()),
-                    ..imp.station_request.borrow().clone()
-                };
-                *imp.station_request.borrow_mut() = station_request;
-
-                this.update_search();
-            }
-        }));
-
-        let order_action =
-            gio::SimpleAction::new_stateful("order", variant_ty, &"Descending".to_variant());
-        imp.search_action_group.add_action(&order_action);
-        order_action.connect_change_state(clone!(@weak self as this => move |action, state|{
-            let imp = this.imp();
-            if let Some(state) = state{
-                action.set_state(state);
-
-                let reverse = if state.str().unwrap() == "Ascending" {
-                    imp.sorting_button_content.set_icon_name("view-sort-ascending-symbolic");
-                    false
-                }else{
-                    imp.sorting_button_content.set_icon_name("view-sort-descending-symbolic");
-                    true
-                };
-
-                // Update station request and redo search
-                let station_request = StationRequest{
-                    reverse: Some(reverse),
-                    ..imp.station_request.borrow().clone()
-                };
-                *imp.station_request.borrow_mut() = station_request;
-
-                this.update_search();
-            }
-        }));
-    }
-
-    pub fn update_search(&self) {
-        let imp = self.imp();
-
-        // Reset previous timeout
-        let id: Option<glib::source::SourceId> = imp.timeout_id.borrow_mut().take();
-        if let Some(id) = id {
-            id.remove()
-        }
-
-        // Don't search if search entry is empty
-        if imp.station_request.borrow().name.is_none() {
-            imp.stack.set_visible_child_name("empty");
-            return;
-        }
-
-        imp.stack.set_visible_child_name("spinner");
-
-        // Start new timeout
-        let id = glib::source::timeout_add_seconds_local(
-            1,
-            clone!(@weak self as this => @default-return glib::Continue(false), move || {
-                let imp = this.imp();
-                *imp.timeout_id.borrow_mut() = None;
-                let client = imp.client.get().unwrap().clone();
-
-                let request = imp.station_request.borrow().clone();
-                debug!("Search for: {:?}", request);
-
-                let fut = client.clone().send_station_request(request).map(clone!(@weak this => move |result| {
-                    let imp = this.imp();
-
-                    let max_results = imp.station_request.borrow().limit.unwrap();
-                    let over_max_results = client.model.n_items() >= max_results;
-                    imp.results_limit_box.set_visible(over_max_results);
-
-                    if client.model.n_items() == 0{
-                        imp.stack.set_visible_child_name("no-results");
-                    }else{
-                        imp.stack.set_visible_child_name("results");
-                    }
-
-                    if let Err(err) = result {
-                        warn!("Station data could not be received: {}", err.to_string());
-
-                        let text = i18n("Station data could not be received.");
-                        SwApplicationWindow::default().show_notification(&text);
-                    }
-                }));
-
-                spawn!(fut);
-                glib::Continue(false)
-            }),
-        );
-        *imp.timeout_id.borrow_mut() = Some(id);
-    }
+        @extends gtk::Widget, adw::NavigationPage;
 }

@@ -3,7 +3,7 @@
 ![screenshot](data/screenshots/1.png)
 ![screenshot](data/screenshots/4.png)
 
-Shortwave is an internet radio player that provides access to a station database with over 30,000 stations.
+Shortwave is an internet radio player that provides access to a station database with over 50,000 stations.
 
 ## Getting in Touch
 If you have any questions regarding the use or development of Shortwave,
@@ -16,7 +16,16 @@ The recommended way of installing Shortwave is using the Flatpak package. If you
 
 Or by clicking this button:
 
-<a href="https://flathub.org/apps/details/de.haeckerfelix.Shortwave"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" width="200"/></a>
+<a href="https://flathub.org/apps/details/de.haeckerfelix.Shortwave"><img src="https://flathub.org/api/badge?svg&locale=en" width="240"/></a>
+
+#### Nightly Builds
+
+Development builds of Shortwave are available from the `gnome-nightly` Flatpak repository: 
+
+```
+flatpak remote-add --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
+flatpak install gnome-nightly de.haeckerfelix.Shortwave.Devel
+```
 
 ## FAQ
 - **Why is it called 'Shortwave'?**
@@ -30,20 +39,21 @@ That's why we decided to call the project 'Shortwave', because internet radio st
 
 - **Why I cannot edit stations anymore?**
 
-    The edit feature is disabled because of vandalism. I cannot change this. [More information here](http://www.radio-browser.info/gui/#/) and [here](https://github.com/segler-alex/radiobrowser-api/issues/39)
+    The edit feature is disabled because of vandalism. I cannot change this. [More information here](http://www.radio-browser.info/gui/#/) and [here](https://github.com/segler-alex/radiobrowser-api/issues/39).
 
-- **Is Shortwave compatible with the Librem 5 / PinePhone?**
+- **Is Shortwave compatible with Linux phones?**
 
     Yes! We use the awesome [libadwaita](https://gitlab.gnome.org/GNOME/libadwaita) library to make the interface adaptive. The easiest way to get it on your phone is using the Flatpak package. [Flathub](https://flathub.org/apps/details/de.haeckerfelix.Shortwave) provides aarch64 packages.
 
 ![Adaptive Screenshot 1](data/screenshots/5.png)
-![Adaptive Screenshot 2](data/screenshots/6.png)
+![Adaptive Screenshot 2](data/screenshots/3.png)
 
 - **Which database does Shortwave use?**
 
-    [radio-browser.info](http://www.radio-browser.info/gui/#/). It's a community database. Everybody can add information.
+    [radio-browser.info](http://www.radio-browser.info/gui/#/). It's a community database, everybody can contribute information.
     
 - **How I can get debug information?**
+
     Run Shortwave using `RUST_BACKTRACE=1 RUST_LOG=shortwave=debug flatpak run de.haeckerfelix.Shortwave` (`.Devel`).
 
 ## Translations
@@ -54,10 +64,9 @@ information on how to join a language team, or even to create one, please see
 
 ## Building
 ### Building with Flatpak + GNOME Builder
-Shortwave can be built and run with [GNOME Builder](https://wiki.gnome.org/Apps/Builder).
-Just clone the repo and hit the run button!
-
-You can get Builder from [here](https://wiki.gnome.org/Apps/Builder/Downloads).
+To build the development version of Shortwave and hack on the code see the
+[general guide](https://welcome.gnome.org/app/Shortwave/#getting-the-app-to-build) for
+building GNOME apps with Flatpak and GNOME Builder.
 
 ### Building it manually
 1. `git clone https://gitlab.gnome.org/World/Shortwave.git`
@@ -69,5 +78,5 @@ You can get Builder from [here](https://wiki.gnome.org/Apps/Builder/Downloads).
 To learn more about the required dependencies, please check the [Flatpak manifest](build-aux/de.haeckerfelix.Shortwave.Devel.json).
 
 ## Code Of Conduct
-We follow the [GNOME Code of Conduct](/CODE_OF_CONDUCT.md).
-All communications in project spaces are expected to follow it.
+We follow the [GNOME Code of Conduct](https://conduct.gnome.org/). All
+communications in project spaces are expected to follow it.

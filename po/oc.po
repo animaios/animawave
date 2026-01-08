@@ -7,423 +7,813 @@ msgid ""
 msgstr ""
 "Project-Id-Version: shortwave master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Shortwave/issues\n"
-"POT-Creation-Date: 2021-08-14 15:19+0000\n"
-"PO-Revision-Date: 2021-08-28 19:09+0200\n"
+"POT-Creation-Date: 2025-03-11 02:18+0000\n"
+"PO-Revision-Date: 2025-04-10 15:13+1000\n"
+"Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Occitan <totenoc@gmail.com>\n"
 "Language: oc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Last-Translator: Quentin PAGÈS\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.6\n"
 
-#: data/gtk/discover_page.ui:28
-msgid "Most voted stations"
-msgstr "Estacions mai votadas"
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:3
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:5
+msgid "@NAME@"
+msgstr "@NAME@"
 
-#: data/gtk/discover_page.ui:43
-msgid "Trending"
-msgstr "Tendéncias"
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:4
+msgid "Internet Radio Player"
+msgstr "Lector de ràdios Internet"
 
-#: data/gtk/discover_page.ui:58
-msgid "Other users are listening to…"
+#. General
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:5
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:10
+msgid "Listen to internet radio"
+msgstr "Escotar la ràdio Internet"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:14
+msgid "Gradio;Radio;Stream;Wave;"
+msgstr "Gradio;Radio;Stream;Wave;ràdio;flux;onda;"
+
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:12
+msgid ""
+"Shortwave is an internet radio player that provides access to a station "
+"database with over 50,000 stations."
 msgstr ""
+"Shortwave es un lector de ràdio internet que provesís accès a una basa de "
+"donadas d'estacions amb mai de 50 000 estacions."
 
-#: data/gtk/library_page.ui:63
-msgid "Receiving station data…"
-msgstr "Recepcion de las donadas de l’estacion…"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:15
+msgid "Features:"
+msgstr "Foncionalitats :"
 
-#: data/gtk/library_page.ui:90
-msgid "_Discover new stations"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:17
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:64
+msgid "Create your own library where you can add your favorite stations"
 msgstr ""
+"Creatz vòstra pròpria bibliotèca ont podètz apondre vòstras estacions "
+"favoritas"
 
-#: data/gtk/mini_controller.ui:87
-msgid "SHORTWAVE INTERNET RADIO"
-msgstr "SHORTWAVE INTERNET RADIO"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:18
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:68
+msgid "Easily search and discover new radio stations"
+msgstr "Cercatz e descobrissètz aisidament de novèlas estacions de ràdio"
 
-#: data/gtk/mini_controller.ui:109 data/gtk/sidebar_controller.ui:63
-#: data/gtk/toolbar_controller.ui:38
-msgid "No playback"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:19
+msgid ""
+"Automatic recognition of tracks, with the possibility to save them "
+"individually"
 msgstr ""
+"Reconeissença automatica de las pistas, amb la possibilitat de las "
+"enregistrar individualament"
 
-#: data/gtk/notification.ui:58
-msgid "Error details"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:20
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:72
+msgid "Responsive application layout, compatible for small and large screens"
 msgstr ""
+"Disposicion d'aplicacion responsiva, compatibla amb d'ecrans pichons e grands"
 
-#: data/gtk/player.ui:44
-msgid "Connected with"
-msgstr "Conectat amb"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:21
+msgid "Play audio on supported network devices (e.g. Google Chromecasts)"
+msgstr ""
+"Legir l'àudio sus de periferics de ret preses en carga (per exemple Google "
+"Chromecasts)"
 
-#: data/gtk/settings_window.ui:8 data/gtk/help_overlay.ui:11
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:22
+msgid "Seamless integration into the GNOME desktop environment"
+msgstr "Integracion transparenta dins l'environament de burèu GNOME"
+
+#. Branding
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:28
+msgid "Felix Häcker"
+msgstr "Felix Häcker"
+
+#: data/gtk/add_station_dialog.ui:14
+msgid "Add Local Station"
+msgstr "Apondre una estacion locala"
+
+#: data/gtk/add_station_dialog.ui:64
+msgid "Change Station Cover"
+msgstr "Modificar la cobertura de l’estacion"
+
+#: data/gtk/add_station_dialog.ui:95
+msgid ""
+"This station will only be added to your library. If you want it to be "
+"available to everyone, you should add it to the <a href=\"https://www.radio-"
+"browser.info/add\">public database</a>."
+msgstr ""
+"Aquesta estacion serà solament aponduda a vòstra bibliotèca. Se volètz que "
+"siá disponibla per tot lo monde, la deuriatz apondre a la <a href=\"https://"
+"www.radio-browser.info/add\">basa de donadas publica</a>."
+
+#: data/gtk/add_station_dialog.ui:107
+msgid "Name"
+msgstr "Nom"
+
+#: data/gtk/add_station_dialog.ui:115
+msgid "Stream URL"
+msgstr "URL del flux"
+
+#: data/gtk/add_station_dialog.ui:123
+msgid "Add Station"
+msgstr "Apondre una estacion"
+
+#: data/gtk/device_dialog.ui:7 data/gtk/player_view.ui:132
+msgid "Connect Device"
+msgstr "Connectar un aparelh"
+
+#: data/gtk/device_dialog.ui:18
+msgid "Searching for Devices…"
+msgstr "Recèrca d’aparelhs…"
+
+#: data/gtk/device_dialog.ui:25
+msgid "Search for Devices"
+msgstr "Cercar d’aparelhs"
+
+#: data/gtk/device_dialog.ui:41
+msgid "No Devices Available"
+msgstr "Cap d’aparelh pas disponible"
+
+#: data/gtk/device_dialog.ui:42
+msgid "No supported Google Cast device found"
+msgstr "Cap d’aparelh Google Cast pres en carga pas trobat"
+
+#: data/gtk/device_indicator.ui:7
+msgid "Disconnect From Device"
+msgstr "Se desconnectar de l’aparelh"
+
+#: data/gtk/help_overlay.ui:11 data/gtk/preferences_dialog.ui:9
 msgid "General"
 msgstr "General"
 
-#: data/gtk/settings_window.ui:11
-msgid "Appearance"
-msgstr "Aparéncia"
-
-#: data/gtk/settings_window.ui:14
-msgid "_Dark Mode"
-msgstr "Mòde _escur"
-
-#: data/gtk/settings_window.ui:16
-msgid "Whether the application should use a dark theme"
-msgstr "Indica se l’aplicacion deu utilizar un tèma escur"
-
-#: data/gtk/settings_window.ui:29
-msgid "Features"
-msgstr "Foncionalitats"
-
-#: data/gtk/settings_window.ui:32
-msgid "_Notifications"
-msgstr "_Notificacions"
-
-#: data/gtk/settings_window.ui:34
-msgid "Show desktop notifications when a new song gets played"
-msgstr ""
-
-#: data/gtk/help_overlay.ui:15
+#: data/gtk/help_overlay.ui:14
 msgctxt "shortcut window"
 msgid "Open shortcut window"
-msgstr ""
+msgstr "Dobrir la fenèstra d’acorchis"
 
 #: data/gtk/help_overlay.ui:21
 msgctxt "shortcut window"
 msgid "Open application menu"
 msgstr "Dobrir lo menú de l’aplicacion"
 
-#: data/gtk/help_overlay.ui:27
+#: data/gtk/help_overlay.ui:26
 msgctxt "shortcut window"
 msgid "Open preferences"
 msgstr "Dobrir las preferéncias"
 
-#: data/gtk/help_overlay.ui:33
+#: data/gtk/help_overlay.ui:32
+msgctxt "shortcut window"
+msgid "Close the window"
+msgstr "Tampar la fenèstra"
+
+#: data/gtk/help_overlay.ui:38
 msgctxt "shortcut window"
 msgid "Quit the application"
 msgstr "Quitar l’aplicacion"
 
-#: data/gtk/help_overlay.ui:40
-msgid "Window"
-msgstr "Fenèstra"
-
-#: data/gtk/help_overlay.ui:44
-msgctxt "shortcut window"
-msgid "Open library view"
-msgstr "Dobrir la vista bibliotèca"
-
-#: data/gtk/help_overlay.ui:50
-msgctxt "shortcut window"
-msgid "Open discover view"
-msgstr ""
-
-#: data/gtk/help_overlay.ui:56
-msgctxt "shortcut window"
-msgid "Open search view"
-msgstr ""
-
-#: data/gtk/help_overlay.ui:62
-msgctxt "shortcut window"
-msgid "Go back"
-msgstr "Precedent"
-
-#: data/gtk/help_overlay.ui:69
+#: data/gtk/help_overlay.ui:46 data/gtk/preferences_dialog.ui:12
 msgid "Playback"
-msgstr ""
+msgstr "Lectura"
 
-#: data/gtk/help_overlay.ui:73
+#: data/gtk/help_overlay.ui:49
 msgctxt "shortcut window"
 msgid "Toggle playback"
-msgstr ""
+msgstr "Alternar lectura e pausa"
 
-#: data/gtk/sidebar_controller.ui:22
-msgid "An error occurred"
-msgstr "Una error s'es producha"
+#: data/gtk/help_overlay.ui:57 data/gtk/volume_control.ui:21
+msgid "Volume"
+msgstr "Volum"
 
-#: data/gtk/sidebar_controller.ui:178
-msgid "_Show station details"
-msgstr ""
+#: data/gtk/help_overlay.ui:60
+msgctxt "shortcut window"
+msgid "Toggle mute"
+msgstr "Activar / Desactivar lo mòde mut"
 
-#: data/gtk/sidebar_controller.ui:182
-msgid "Stream to a _device"
-msgstr ""
+#: data/gtk/help_overlay.ui:66
+msgctxt "shortcut window"
+msgid "Increase volume"
+msgstr "Aumentar lo volum"
 
-#: data/gtk/sidebar_controller.ui:188
-msgid "_Enable mini player"
-msgstr ""
+#: data/gtk/help_overlay.ui:72
+msgctxt "shortcut window"
+msgid "Decrease volume"
+msgstr "Redusir lo volum"
 
-#: data/gtk/song_listbox.ui:23
-msgid ""
-"Songs are automatically recognized using the stream metadata.\n"
-"\n"
-"If the station does not send any metadata, no songs can be recognized."
-msgstr ""
-
-#: data/gtk/song_listbox.ui:63
-msgid "No songs detected"
-msgstr "Cap de cançon pas detectada"
-
-#: data/gtk/song_listbox.ui:73
-msgid "Detected songs will appear here."
-msgstr ""
-
-#: data/gtk/song_listbox.ui:82
-msgid "_How does this work?"
-msgstr ""
-
-#: data/gtk/song_listbox.ui:124
-msgid "Saved songs are located in your Music folder."
-msgstr ""
-
-#: data/gtk/song_listbox.ui:137
-msgid "_Open"
-msgstr "_Dobrir"
-
-#: data/gtk/song_row.ui:14
-msgid "Save recorded song"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:8
-msgid "Station details"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:71
-msgid "Actions"
-msgstr "Accions"
-
-#: data/gtk/station_dialog.ui:74
-msgid "_Play this station"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:82
-msgid "_Add to library"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:91
-msgid "_Remove from Library"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:102
-msgid "Information"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:105
-msgid "Language"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:119
-msgid "Tags"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:133
-msgid "Codec"
-msgstr ""
-
-#: data/gtk/station_dialog.ui:147
-msgid "Homepage"
-msgstr ""
-
-#. This is a noun/label for the station stream url
-#: data/gtk/station_dialog.ui:172
-msgid "Stream"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:47
-msgid "Stream to a device"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:52
-msgid "_Cancel"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:58
-msgid "_Connect"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:90
-msgid "Devices which implement the Google Cast protocol are supported."
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:122
-msgid "No devices found"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:132
-msgid "_Retry search"
-msgstr ""
-
-#: data/gtk/streaming_dialog.ui:180 data/gtk/streaming_dialog.ui:211
-msgid "Searching for devices…"
-msgstr ""
-
-#: data/gtk/window.ui:103 data/gtk/window.ui:173
-msgid "_Sorting"
-msgstr ""
-
-#: data/gtk/window.ui:106
-msgid "_Name"
-msgstr "_Nom"
-
-#: data/gtk/window.ui:111
-msgid "_Language"
-msgstr "_Lenga"
-
-#: data/gtk/window.ui:116
-msgid "_Country"
-msgstr "_País"
-
-#: data/gtk/window.ui:121
-msgid "S_tate"
-msgstr ""
-
-#: data/gtk/window.ui:126
-msgid "_Votes"
-msgstr "_Vòtes"
-
-#: data/gtk/window.ui:133
-msgid "_Ascending"
-msgstr "_Ascendent"
-
-#: data/gtk/window.ui:138
-msgid "_Descending"
-msgstr "_Descendent"
-
-#: data/gtk/window.ui:147 data/gtk/window.ui:179
-msgid "_Open radio-browser.info <sup>↗</sup>"
-msgstr ""
-
-#: data/gtk/window.ui:151 data/gtk/window.ui:183
-msgid "_Create new station <sup>↗</sup>"
-msgstr ""
-
-#: data/gtk/window.ui:157 data/gtk/window.ui:189
-msgid "_Preferences"
-msgstr "_Preferéncias"
-
-#: data/gtk/window.ui:161 data/gtk/window.ui:193
-msgid "_Keyboard Shortcuts"
-msgstr "Acorchis de _clavièr"
-
-#: data/gtk/window.ui:165 data/gtk/window.ui:197
-msgid "_About Shortwave"
-msgstr "_A prepaus de Shortwave"
-
-#: src/audio/player.rs:168
-msgid "This station cannot be played because the stream is offline."
-msgstr ""
-
-#: src/audio/player.rs:186
-msgid "Station cannot be streamed."
-msgstr ""
-
-#: src/audio/player.rs:186
-msgid "URL is not valid."
-msgstr "L'URL n'es pas valida."
-
-#: src/database/library.rs:271
-msgid "An invalid station was removed from the library."
-msgstr ""
-
-#: src/ui/about_dialog.rs:32
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:6
-msgid "Listen to internet radio"
-msgstr "Escotar la ràdio Internet"
-
-#: src/ui/about_dialog.rs:35
-msgid "translator-credits"
-msgstr ""
-
-#: src/ui/pages/discover_page.rs:90
-msgid "Show statistics"
-msgstr ""
-
-#: src/ui/pages/discover_page.rs:91
-msgid "Browse over 25,500 stations"
-msgstr ""
-
-#: src/ui/pages/discover_page.rs:93
-msgid "Add new station"
-msgstr "Apondre una estacion novèla"
-
-#: src/ui/pages/discover_page.rs:94
-msgid "Your favorite station is missing?"
-msgstr ""
-
-#: src/ui/pages/discover_page.rs:96
-msgid "Open website"
-msgstr "Dobrir lo site web"
-
-#: src/ui/pages/discover_page.rs:97
-msgid "Powered by radio-browser.info"
-msgstr ""
-
-#: src/ui/pages/discover_page.rs:136 src/ui/pages/search_page.rs:151
-msgid "Station data could not be received."
-msgstr ""
-
-#. Welcome text which gets displayed when the library is empty. "{}" is the application name.
-#: src/ui/pages/library_page.rs:117
-msgid "Welcome to {}"
-msgstr ""
-
-#: src/utils.rs:28
-msgid "{} Vote"
-msgid_plural "{} Votes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/utils.rs:30
-msgid "{} · {} Vote"
-msgid_plural "{} · {} Votes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:5
-#: data/de.haeckerfelix.Shortwave.desktop.in.in:3
+#: data/gtk/library_page.ui:4
 msgid "Shortwave"
 msgstr "Shortwave"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:8
-msgid "Felix Häcker"
-msgstr ""
+#: data/gtk/library_page.ui:15 data/gtk/search_page.ui:4
+msgid "Browse Stations"
+msgstr "Navegar demest las estacions"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:16
+#: data/gtk/library_page.ui:23
+msgid "Main Menu"
+msgstr "Menú principal"
+
+#: data/gtk/library_page.ui:92
+msgid "_Add New Stations"
+msgstr "_Apondre una estacion novèla"
+
+#: data/gtk/library_page.ui:115
+msgid "_Sorting"
+msgstr "_Triar"
+
+#: data/gtk/library_page.ui:118
+msgid "_Name"
+msgstr "_Nom"
+
+#: data/gtk/library_page.ui:123
+msgid "_Language"
+msgstr "_Lenga"
+
+#: data/gtk/library_page.ui:128
+msgid "_Country"
+msgstr "_País"
+
+#: data/gtk/library_page.ui:133
+msgid "S_tate"
+msgstr "Es_tat"
+
+#: data/gtk/library_page.ui:138
+msgid "_Bitrate"
+msgstr "_Debit"
+
+#: data/gtk/library_page.ui:145
+msgid "_Ascending"
+msgstr "_Ascendent"
+
+#: data/gtk/library_page.ui:150
+msgid "_Descending"
+msgstr "_Descendent"
+
+#: data/gtk/library_page.ui:159
+msgid "_Open radio-browser.info <sup>↗</sup>"
+msgstr "_Dobrir radio-browser.info <sup>↗</sup>"
+
+#: data/gtk/library_page.ui:166
+msgid "_Preferences"
+msgstr "_Preferéncias"
+
+#: data/gtk/library_page.ui:170
+msgid "_Keyboard Shortcuts"
+msgstr "Acorchis de _clavièr"
+
+#: data/gtk/library_page.ui:174
+msgid "_About Shortwave"
+msgstr "_A prepaus de Shortwave"
+
+#: data/gtk/library_page.ui:178
+msgid "_Quit"
+msgstr "_Quitar"
+
+#: data/gtk/library_page.ui:186
+msgid "Add _Local Station"
+msgstr "Apondre una estacion _locala"
+
+#: data/gtk/player_gadget.ui:40 data/gtk/player_toolbar.ui:92
+#: data/gtk/player_view.ui:156 data/gtk/station_row.ui:86
+msgid "Play"
+msgstr "Lectura"
+
+#: data/gtk/player_gadget.ui:55 data/gtk/player_toolbar.ui:106
+#: data/gtk/player_view.ui:170
+msgid "Stop"
+msgstr "Arrèst"
+
+#: data/gtk/player_gadget.ui:71 data/gtk/player_toolbar.ui:121
+#: data/gtk/player_view.ui:185
+msgid "Buffering…"
+msgstr "Mesa en tampon…"
+
+#: data/gtk/player_gadget.ui:118
+msgid "SHORTWAVE INTERNET RADIO"
+msgstr "SHORTWAVE INTERNET RADIO"
+
+#: data/gtk/player_gadget.ui:140 data/gtk/player_toolbar.ui:29
+#: data/gtk/player_view.ui:58 src/app.rs:259
+msgid "No Playback"
+msgstr "Cap de lectura"
+
+#: data/gtk/player_gadget.ui:199
+msgid "Close"
+msgstr "Tampar"
+
+#: data/gtk/player_gadget.ui:210
+msgid "Restore Window"
+msgstr "Restablir la fenèstra"
+
+#: data/gtk/player_view.ui:13
+msgid "Enable Gadget Mode"
+msgstr "Activar lo mòde Gadget"
+
+#: data/gtk/player_view.ui:215
+msgid "Show Station Details"
+msgstr "Afichar los detalhs de l’estacion"
+
+#: data/gtk/player_view.ui:266
+msgid "No Tracks"
+msgstr "Cap de pista"
+
+#: data/gtk/player_view.ui:277
+msgid "Played tracks will appear here"
+msgstr "Las pistas jogadas apareisseràn aicí"
+
+#: data/gtk/player_view.ui:311
+msgid "An error occurred"
+msgstr "Una error s'es producha"
+
+#: data/gtk/preferences_dialog.ui:15
+msgid "_Background Playback"
+msgstr "_Lectura en rèireplan"
+
+#: data/gtk/preferences_dialog.ui:16
+msgid "Playback continues when window is closed"
+msgstr "La lectura contunha quand la fenèstra es tampada"
+
+#: data/gtk/preferences_dialog.ui:28
+msgid "_Notifications"
+msgstr "_Notificacions"
+
+#: data/gtk/preferences_dialog.ui:29
+msgid "Show desktop notifications when a new track gets played"
+msgstr "Afichar una notificacion de burèu quand una pista novèla comença"
+
+#. Translators: This is a noun / preferences group title
+#: data/gtk/preferences_dialog.ui:43
+msgid "Recording"
+msgstr "Enregistrament"
+
+#: data/gtk/preferences_dialog.ui:44
 msgid ""
-"Shortwave is an internet radio player that provides access to a station "
-"database with over 25,000 stations."
+"Tracks are automatically recognised based on the station stream metadata and "
+"can be saved."
 msgstr ""
+"Las pistas son automaticament reconegudas en utilizant las metadonadas del "
+"fus de difusion de l’estacion e se pòdon enregistrar."
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:19
-msgid "Features:"
-msgstr "Foncionalitats :"
+#: data/gtk/preferences_dialog.ui:47
+msgid "Track _Directory"
+msgstr "_Repertòri de las pistas"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:21
-msgid "Create your own library where you can add your favorite stations"
+#: data/gtk/preferences_dialog.ui:69
+msgid "Save _All Tracks"
+msgstr "Salvar totas _las pistas"
+
+#: data/gtk/preferences_dialog.ui:70
+msgid "All recorded tracks are automatically saved in the track directory"
 msgstr ""
+"Totas las pistas enregistradas son automaticament salvadas dins lo repertòri "
+"de las pistas"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:22
-msgid "Easily search and discover new radio stations"
+#: data/gtk/preferences_dialog.ui:84
+msgid "Decide for Each _Track"
+msgstr "Causir per cada _pista"
+
+#: data/gtk/preferences_dialog.ui:85
+msgid "Tracks are temporarily recorded and can be saved if desired"
 msgstr ""
+"Las pistas son temporàriament enregistradas e se pòdon salvar se volgut"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:23
+#: data/gtk/preferences_dialog.ui:100
+msgid "Record N_othing"
+msgstr "Enregistrar p_as res"
+
+#: data/gtk/preferences_dialog.ui:101
+msgid "Stations are played without recording"
+msgstr "S’escota las estacions sens las enregistrar"
+
+#: data/gtk/preferences_dialog.ui:120
+msgid "M_inimum Duration"
+msgstr "Durada m_inimala"
+
+#: data/gtk/preferences_dialog.ui:121
+msgid "Tracks shorter than the minimum duration will be ignored"
+msgstr "Las pistas mai corta que la durada minimala seràn ignoradas"
+
+#: data/gtk/preferences_dialog.ui:136
+msgid "M_aximum Duration"
+msgstr "Durada m_aximala"
+
+#: data/gtk/preferences_dialog.ui:137
+msgid "Recording ends when the maximum duration is reached"
+msgstr "L’enregistrament s’acaba quand la durada maximala es atenguda"
+
+#: data/gtk/search_page.ui:23
+msgid "Search"
+msgstr "Recercar"
+
+#: data/gtk/search_page.ui:24
+msgid "Search stations"
+msgstr "Cercar dins las estacions"
+
+#: data/gtk/search_page.ui:72
+msgid "Discover over 50,000 public stations"
+msgstr "Descobrissètz mai de 50 000 estacions publicas"
+
+#: data/gtk/search_page.ui:90
+msgid "Popular Stations"
+msgstr "Estacions popularas"
+
+#: data/gtk/search_page.ui:112
+msgid "Discover New Stations"
+msgstr "Descobrir d’estacions novèlas"
+
+#: data/gtk/search_page.ui:135
 msgid ""
-"Automatic recognition of songs, with the possibility to save them "
-"individually"
+"The displayed information is provided by <a href=\"https://www.radio-browser."
+"info/\">radio-browser.info</a>. \n"
+"Shortwave has no influence on the listed stations."
 msgstr ""
+"Las informacions afichadas son provesidas per <a href=\"https://www.radio-"
+"browser.info/\">radio-browser.info</a>.\n"
+"Shortwave a pas cap d'influéncia sus las estacions listadas."
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:24
-msgid "Responsive application layout, compatible for small and large screens"
+#: data/gtk/search_page.ui:201
+msgid "Loading…"
+msgstr "Cargament…"
+
+#: data/gtk/search_page.ui:216
+msgid "No Results"
+msgstr "Cap de resultat"
+
+#: data/gtk/search_page.ui:217
+msgid ""
+"If the station you are looking for is missing, you can add it to the public "
+"database."
 msgstr ""
+"S’una estacion que cercatz es absenta, la podètz apondre a la basa de "
+"donadas publica."
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:25
-msgid "Play audio on supported network devices (e.g. Google Chromecasts)"
+#: data/gtk/search_page.ui:221
+msgid "Add Missing Station"
+msgstr "Apondre una estacion absenta"
+
+#: data/gtk/search_page.ui:239
+msgid "Unable to Retrieve Station Data"
+msgstr "Recuperacion impossibla de las donadas de l’estacion"
+
+#: data/gtk/search_page.ui:242
+msgid "Try Again"
+msgstr "Tornar ensajar"
+
+#: data/gtk/station_dialog.ui:75
+msgid "_Play"
+msgstr "_Lectura"
+
+#: data/gtk/station_dialog.ui:91
+msgid "_Add to Library"
+msgstr "_Apondre a la bibliotèca"
+
+#: data/gtk/station_dialog.ui:108
+msgid "_Remove From Library"
+msgstr "_Suprimir de la bibliotèca"
+
+#: data/gtk/station_dialog.ui:127 data/gtk/station_row.ui:57
+msgid "Local Station"
+msgstr "Estacion locala"
+
+#: data/gtk/station_dialog.ui:128
+msgid ""
+"This station exists only in your library, and is not part of the public "
+"database"
 msgstr ""
+"Aquesta estacion existís sonque dins vòstra bibliotèca, e fa pas partida de "
+"la basa de donadas publica"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:26
-msgid "Seamless integration into the GNOME desktop environment"
+#: data/gtk/station_dialog.ui:142 data/gtk/station_row.ui:69
+msgid "Orphaned Station"
+msgstr "Estacion orfanèla"
+
+#: data/gtk/station_dialog.ui:143
+msgid ""
+"The information could not be updated, probably this station was removed from "
+"the public database"
 msgstr ""
+"Es pas estat possible d’actualizar las informacion, probablament aquesta "
+"estacion es estada suprimida de la basa de donadas publica"
 
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/de.haeckerfelix.Shortwave.desktop.in.in:12
-msgid "Gradio;Radio;Stream;Wave;"
-msgstr "Gradio;Radio;Stream;Wave;ràdio;flux;onda;"
+#: data/gtk/station_dialog.ui:154
+msgid "Information"
+msgstr "Informacions"
+
+#: data/gtk/station_dialog.ui:158
+msgid "Language"
+msgstr "Lenga"
+
+#: data/gtk/station_dialog.ui:169
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: data/gtk/station_dialog.ui:182
+msgid "Location"
+msgstr "Localizacion"
+
+#: data/gtk/station_dialog.ui:186
+msgid "Country"
+msgstr "País"
+
+#: data/gtk/station_dialog.ui:197
+msgid "State"
+msgstr "Estat"
+
+#: data/gtk/station_dialog.ui:232
+msgid "Audio"
+msgstr "Àudio"
+
+#: data/gtk/station_dialog.ui:235
+msgid "Bitrate"
+msgstr "Debit"
+
+#: data/gtk/station_dialog.ui:246
+msgid "Codec"
+msgstr "Codèc"
+
+#. This is a noun/label for the station stream url
+#: data/gtk/station_dialog.ui:257
+msgid "Stream"
+msgstr "Flux continú"
+
+#: data/gtk/station_dialog.ui:263
+msgid "Copy"
+msgstr "Copiar"
+
+#: data/gtk/track_dialog.ui:74
+msgid "Edit"
+msgstr "Modificar"
+
+#: data/gtk/track_dialog.ui:121
+msgid "The recorded track has been saved"
+msgstr "La pista enregistrada es estada salvada"
+
+#: data/gtk/track_dialog.ui:137 data/gtk/track_dialog.ui:208
+#: data/gtk/track_row.ui:9 src/audio/player.rs:449
+msgid "Save Track"
+msgstr "Enregistrar la pista"
+
+#: data/gtk/track_dialog.ui:148
+msgid "Play Track"
+msgstr "Legir la pista"
+
+#: data/gtk/track_dialog.ui:159
+msgid "Cancel Recording"
+msgstr "Anullar l'enregistrament"
+
+#: data/gtk/track_dialog.ui:175
+msgid "Station"
+msgstr "Estacion"
+
+#: data/gtk/track_dialog.ui:209
+msgid "Save this track when recording is complete"
+msgstr "Enregistrar aquesta pista quand l’enregistrament s’acaba"
+
+#: data/gtk/track_dialog.ui:223
+msgid "Recording behaviour can be changed in <a href=\"\">preferences</a>"
+msgstr ""
+"Se pòt cambiar lo compòrtament d’enregistrament dins las <a "
+"href=\"\">preferéncias</a>"
+
+#: data/gtk/track_row.ui:20
+msgid "Saved"
+msgstr "Enregistrada"
+
+#: data/gtk/volume_control.ui:9
+msgid "Toggle Mute"
+msgstr "Activar / Desactivar lo mòde mut"
+
+#: src/app.rs:85
+msgid "Track no longer available"
+msgstr "Pista pas mai disponibla"
+
+#: src/app.rs:109 src/app.rs:132
+msgid "This track is currently not being recorded"
+msgstr "Aquesta pista es en cors d’enregistrament"
+
+#: src/app.rs:263
+msgid "Playing “{}”"
+msgstr "Lectura de « {} »"
+
+#: src/app.rs:362
+msgid "Active Playback"
+msgstr "Lectura"
+
+#: src/audio/player.rs:459
+msgid "Don't Record"
+msgstr "Enregistrar pas"
+
+#: src/audio/recording_state.rs:54 src/audio/recording_state.rs:56
+msgid "Not Recorded"
+msgstr "Non enregistrada"
+
+#: src/audio/recording_state.rs:55
+msgid "Ignored Track"
+msgstr "Pista ignorada"
+
+#: src/audio/recording_state.rs:58
+msgid "Recording…"
+msgstr "Enregistrament…"
+
+#: src/audio/recording_state.rs:59 src/audio/recording_state.rs:60
+msgid "Recorded"
+msgstr "Enregistrada"
+
+#: src/audio/recording_state.rs:62
+msgid "Below Threshold"
+msgstr "En dejós del sulhet"
+
+#: src/audio/recording_state.rs:63
+msgid "Cancelled"
+msgstr "Anullat"
+
+#: src/audio/recording_state.rs:69
+msgid "Recording is deactivated in preferences"
+msgstr "L’enregistrament es desactivat dins las preferéncias"
+
+#: src/audio/recording_state.rs:71
+msgid "The track contains a word that is on the ignore list"
+msgstr "La pista conten un mot sus la lista d'ignorar"
+
+#: src/audio/recording_state.rs:74
+msgid ""
+"The track wasn't played from the beginning, so it can't be fully recorded"
+msgstr ""
+"La pista es pas estada jogada de la debuta, alara se pòt pas enregistrar "
+"complètament"
+
+#: src/audio/recording_state.rs:77
+msgid "The track will be recorded until a new track gets played"
+msgstr "La pista actuala s’enregistrarà fins qu’una pista novèla siá detectada"
+
+#: src/audio/recording_state.rs:79
+msgid "The track has been temporarily recorded"
+msgstr "La pista es estada temporàriament enregistrada"
+
+#: src/audio/recording_state.rs:81
+msgid "The maximum recording duration has been reached"
+msgstr "La durada maximala d’enregistrament es estada atenguda"
+
+#: src/audio/recording_state.rs:84
+msgid ""
+"The track has been discarded as the duration was below the set threshold"
+msgstr ""
+"La pista es estada ignorada perque la durada es en dessús del sulhet definit"
+
+#: src/audio/recording_state.rs:86
+msgid "Recording has been cancelled"
+msgstr "L’enregistrament es estat anullat"
+
+#: src/device/device_discovery.rs:83
+msgid "Google Cast Device"
+msgstr "Aparelh Google Cast"
+
+#: src/device/device_discovery.rs:86
+msgid "Unknown Model"
+msgstr "Modèl desconegut"
+
+#: src/ui/about_dialog.rs:41
+msgid "translator-credits"
+msgstr "Quentin PAGÈS"
+
+#: src/ui/about_dialog.rs:42
+msgid "Donate"
+msgstr "Far un don"
+
+#: src/ui/add_station_dialog.rs:94
+msgid "Select Station Cover"
+msgstr "Seleccionar una cobertura d’estacion"
+
+#: src/ui/display_error.rs:50
+msgid "Show Details"
+msgstr "Afichar los detalhs"
+
+#: src/ui/pages/library_page.rs:111
+msgid "Welcome to {}"
+msgstr "La benvenguda a {}"
+
+#: src/ui/preferences_dialog.rs:139
+msgid "Select Save Directory"
+msgstr "Seleccionar lo repertòri d’enregistrament"
+
+#: src/ui/preferences_dialog.rs:140
+msgid "_Select"
+msgstr "_Seleccionar"
+
+#: src/ui/preferences_dialog.rs:163
+msgid "{} min"
+msgid_plural "{} min"
+msgstr[0] "{} min."
+msgstr[1] "{} min."
+
+#: src/ui/preferences_dialog.rs:172
+msgid "{} sec"
+msgid_plural "{} sec"
+msgstr[0] "{} seg."
+msgstr[1] "{} seg."
+
+#: src/ui/station_dialog.rs:207
+msgid "{} kbit/s"
+msgstr "{} kbit/s"
+
+#: src/ui/station_dialog.rs:292
+msgid "Copied"
+msgstr "Copiat"
+
+#: src/ui/window.rs:221
+msgid "No Permission for Background Playback"
+msgstr "Cap d’autorizacion per la lectura en rèireplan"
+
+#: src/ui/window.rs:223
+msgid "“Run in Background” must be allowed for this app in system settings."
+msgstr ""
+"« Executar en rèireplan » deu èsser permés per aquesta aplicacion als "
+"paramètres sistèma."
+
+#: src/ui/window.rs:227
+msgid "Try Anyway"
+msgstr "Tornar ensajar malgrat tot"
+
+#: src/ui/window.rs:228
+msgid "Disable Background Playback"
+msgstr "Desactivar la lectura en rèireplan"
+
+#: src/utils.rs:51
+msgid "{} hour"
+msgid_plural "{} hours"
+msgstr[0] "{} ora"
+msgstr[1] "{} oras"
+
+#: src/utils.rs:57
+msgid "{} minute"
+msgid_plural "{} minutes"
+msgstr[0] "{} minuta"
+msgstr[1] "{} minutas"
+
+#: src/utils.rs:62
+msgid "{} second"
+msgid_plural "{} seconds"
+msgstr[0] "{} segonda"
+msgstr[1] "{} segondas"
+
+#~ msgid "No Songs"
+#~ msgstr "Cap de cançons"
+
+#~ msgid ""
+#~ "Songs that have been identified and recorded using the stream metadata "
+#~ "will appear here."
+#~ msgstr ""
+#~ "Las cançons qu'an estada identificadas e enregistradas en utilizant las "
+#~ "metadonadas del flux apareisseràn aicí."
+
+#~ msgid "Features"
+#~ msgstr "Foncionalitats"
+
+#~ msgid "Save recorded song"
+#~ msgstr "Salvar la cançon enregistrada"
+
+#~ msgid "Station cannot be streamed. URL is not valid."
+#~ msgstr "Se pòt pas difusar l’estacion. L’URL es pas valida."
+
+#~ msgid "Recording in Progress"
+#~ msgstr "Enregistrament en cors"
+
+#~ msgid ""
+#~ "The current song cannot be fully recorded. The beginning has been missed."
+#~ msgstr ""
+#~ "Se pòt pas enregistrar la cançon actuala. La debuta es estada mancada."
+
+#~ msgid "Trending"
+#~ msgstr "Tendéncias"
+
+#~ msgid "Receiving station data…"
+#~ msgstr "Recepcion de las donadas de l’estacion…"
+
+#~ msgid "Appearance"
+#~ msgstr "Aparéncia"
+
+#~ msgid "_Dark Mode"
+#~ msgstr "Mòde _escur"
+
+#~ msgid "Whether the application should use a dark theme"
+#~ msgstr "Indica se l’aplicacion deu utilizar un tèma escur"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open library view"
+#~ msgstr "Dobrir la vista bibliotèca"
+
+#~ msgid "No songs detected"
+#~ msgstr "Cap de cançon pas detectada"
+
+#~ msgid "_Open"
+#~ msgstr "_Dobrir"
+
+#~ msgid "_Votes"
+#~ msgstr "_Vòtes"
+
+#~ msgid "URL is not valid."
+#~ msgstr "L'URL n'es pas valida."
+
+#~ msgid "Open website"
+#~ msgstr "Dobrir lo site web"

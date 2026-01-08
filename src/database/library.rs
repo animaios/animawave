@@ -1,5 +1,5 @@
 // Shortwave - library.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2024  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,50 +15,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::cell::RefCell;
+use std::collections::HashMap;
 
-use futures::future::join_all;
-use glib::{
-    clone, Enum, ObjectExt, ParamFlags, ParamSpec, ParamSpecEnum, ParamSpecObject, Sender, ToValue,
-};
+use glib::Properties;
+use gtk::glib;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::{gdk_pixbuf, glib};
-use once_cell::sync::Lazy;
-use once_cell::unsync::OnceCell;
-use url::Url;
 
 use super::models::StationEntry;
-use crate::api::{Client, Error, SwStation};
-use crate::app::Action;
-use crate::database::{connection, queries};
-use crate::model::SwStationModel;
-
-#[derive(Display, Copy, Debug, Clone, EnumString, Eq, PartialEq, Enum)]
-#[repr(u32)]
-#[enum_type(name = "SwLibraryStatus")]
-pub enum SwLibraryStatus {
-    Loading,
-    Content,
-    Empty,
-    Offline,
-}
-
-impl Default for SwLibraryStatus {
-    fn default() -> Self {
-        SwLibraryStatus::Loading
-    }
-}
+use super::*;
+use crate::api;
+use crate::api::StationMetadata;
+use crate::api::{client, SwStation, SwStationModel};
 
 mod imp {
     use super::*;
 
-    #[derive(Debug, Default)]
+    #[derive(Debug, Default, Properties)]
+    #[properties(wrapper_type = super::SwLibrary)]
     pub struct SwLibrary {
+        #[property(get)]
         pub model: SwStationModel,
+        #[property(get, builder(SwLibraryStatus::default()))]
         pub status: RefCell<SwLibraryStatus>,
-
-        pub client: OnceCell<Client>,
-        pub sender: OnceCell<Sender<Action>>,
     }
 
     #[glib::object_subclass]
@@ -67,37 +46,64 @@ mod imp {
         type Type = super::SwLibrary;
     }
 
+    #[glib::derived_properties]
     impl ObjectImpl for SwLibrary {
-        fn properties() -> &'static [ParamSpec] {
-            static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
-                vec![
-                    ParamSpecObject::new(
-                        "model",
-                        "",
-                        "",
-                        SwStationModel::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
-                    ParamSpecEnum::new(
-                        "status",
-                        "",
-                        "",
-                        SwLibraryStatus::static_type(),
-                        SwLibraryStatus::default() as i32,
-                        ParamFlags::READABLE,
-                    ),
-                ]
-            });
+        fn constructed(&self) {
+            self.parent_constructed();
 
-            PROPERTIES.as_ref()
-        }
+            // Load station entries from sqlite database
+            let entries = queries::stations().unwrap();
+            info!(
+                "Loaded {} item(s) from {}",
+                entries.len(),
+                connection::DB_PATH.to_str().unwrap()
+            );
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "model" => obj.model().to_value(),
-                "status" => obj.status().to_value(),
-                _ => unimplemented!(),
+            let mut stations = Vec::new();
+            for entry in entries {
+                // Station metadata
+                let metadata = if entry.is_local {
+                    if let Some(data) = entry.data {
+                        match serde_json::from_str(&data) {
+                            Ok(m) => m,
+                            Err(err) => {
+                                error!(
+                                    "Unable to deserialize metadata for local station {}: {}",
+                                    entry.uuid, err
+                                );
+                                continue;
+                            }
+                        }
+                    } else {
+                        // TODO: Expose error to UI
+                        warn!(
+                            "No data for local station {}, removing empty entry from database.",
+                            entry.uuid
+                        );
+                        queries::delete_station(&entry.uuid).unwrap();
+                        continue;
+                    }
+                } else if let Some(data) = entry.data {
+                    // radio-browser.info station, and we have data cached
+                    serde_json::from_str(&data).unwrap_or_default()
+                } else {
+                    // radio-browser.info station, and we have no data cached yet
+                    StationMetadata::default()
+                };
+
+                // Station favicon
+                let favicon = if let Some(data) = entry.favicon {
+                    gtk::gdk::Texture::from_bytes(&glib::Bytes::from_owned(data)).ok()
+                } else {
+                    None
+                };
+
+                let station = SwStation::new(&entry.uuid, entry.is_local, metadata, favicon);
+                stations.push(station);
             }
+
+            self.model.add_stations(stations);
+            self.obj().update_library_status();
         }
     }
 }
@@ -107,45 +113,61 @@ glib::wrapper! {
 }
 
 impl SwLibrary {
-    pub fn new(sender: Sender<Action>) -> Self {
-        let library = glib::Object::new::<Self>(&[]).unwrap();
-        library.imp().sender.set(sender).unwrap();
+    pub async fn update_data(&self) -> Result<(), api::Error> {
+        let mut stations_to_update: HashMap<String, SwStation> = HashMap::new();
+        let mut uuids_to_update = Vec::new();
 
-        library
-    }
-
-    pub fn model(&self) -> SwStationModel {
-        self.imp().model.clone()
-    }
-
-    pub fn status(&self) -> SwLibraryStatus {
-        *self.imp().status.borrow()
-    }
-
-    pub fn refresh_data(&self, server: Option<&Url>) {
-        let imp = self.imp();
-
-        if let Some(server) = server {
-            if let Some(client) = imp.client.get() {
-                client.set_server(server.clone())
-            } else {
-                let client = Client::new(server.clone());
-                imp.client.set(client).unwrap();
+        // Collect all relevant UUIDs
+        for station in self.model().snapshot() {
+            let station: &SwStation = station.downcast_ref().unwrap();
+            if !station.is_local() {
+                stations_to_update.insert(station.uuid(), station.clone());
+                uuids_to_update.push(station.uuid());
             }
         }
 
-        self.load_stations();
-    }
+        // Retrieve updated station metadata for those UUIDs
+        let result = client::station_metadata_by_uuid(uuids_to_update).await?;
 
-    pub fn add_stations(&self, stations: Vec<SwStation>) {
-        debug!("Add {} station(s)", stations.len());
-        for station in stations {
-            self.imp().model.add_station(&station);
+        for metadata in result {
+            if let Some(station) = stations_to_update.remove(&metadata.stationuuid) {
+                station.set_metadata(metadata.clone());
+                debug!(
+                    "Updated station metadata for {} ({})",
+                    station.metadata().name,
+                    station.metadata().stationuuid
+                );
 
-            let entry = StationEntry::for_station(&station);
-            queries::insert_station(entry).unwrap();
+                // Update cache
+                let entry = StationEntry::for_station(&station);
+                queries::update_station(entry).unwrap();
+            } else {
+                warn!(
+                    "Unable to update station metadata for {} ({}): Not found in database",
+                    metadata.name, metadata.stationuuid
+                );
+            }
         }
 
+        // Iterate through stations for which we haven't been able to fetch
+        // updated metadata from radio-browser.info and mark them as orphaned.
+        for (_, station) in stations_to_update {
+            debug!(
+                "Unable to update station metadata for {} ({}): Station is orphaned",
+                station.metadata().name,
+                station.metadata().stationuuid
+            );
+            station.set_is_orphaned(true);
+        }
+
+        Ok(())
+    }
+
+    pub fn add_station(&self, station: SwStation) {
+        let entry = StationEntry::for_station(&station);
+        queries::insert_station(entry).unwrap();
+
+        self.imp().model.add_stations(vec![station]);
         self.update_library_status();
     }
 
@@ -159,8 +181,8 @@ impl SwLibrary {
         self.update_library_status();
     }
 
-    pub fn contains_station(station: &SwStation) -> bool {
-        queries::contains_station(&station.uuid()).unwrap()
+    pub fn contains_station(&self, station: &SwStation) -> bool {
+        self.model().station(&station.uuid()).is_some()
     }
 
     fn update_library_status(&self) {
@@ -172,121 +194,12 @@ impl SwLibrary {
             *imp.status.borrow_mut() = SwLibraryStatus::Content;
         }
 
-        self.notify("status");
+        self.notify_status();
     }
+}
 
-    fn load_stations(&self) {
-        // Load database async
-        let future = clone!(@strong self as this => async move {
-            // Clear previously loaded stations first
-            this.imp().model.clear();
-
-            let entries = queries::stations().unwrap();
-
-            // Print database info
-            info!("Database Path: {}", connection::DB_PATH.to_str().unwrap());
-            info!("Stations: {}", entries.len());
-
-            // Set library status to loading
-            let imp = this.imp();
-            *imp.status.borrow_mut() = SwLibraryStatus::Loading;
-            this.notify("status");
-
-            let futures = entries.into_iter().map(|entry| this.load_station(entry));
-            join_all(futures).await;
-
-            this.update_library_status();
-        });
-        spawn!(future);
-    }
-
-    /// Try to add a station to the database.
-    async fn load_station(&self, entry: StationEntry) {
-        let imp = self.imp();
-        let client = imp.client.clone();
-        let uuid = entry.uuid.clone();
-
-        // Load custom favicon from database entry if available
-        let mut favicon = None;
-        if let Some(data) = entry.favicon {
-            let loader = gdk_pixbuf::PixbufLoader::new();
-            if loader.write(&data).is_ok() && loader.close().is_ok() {
-                favicon = loader.pixbuf()
-            }
-        }
-
-        // If it's a local entry, load the metadata just from the database
-        // and don't try to retrieve data from radio-browser.info
-        if entry.is_local {
-            if let Some(data) = &entry.data {
-                match serde_json::from_str(data) {
-                    Ok(metadata) => {
-                        let station = SwStation::new(uuid, true, false, metadata, favicon.clone());
-                        imp.model.add_station(&station);
-                    }
-                    Err(err) => {
-                        warn!(
-                            "Unable to deserialize metadata for local station {}: {}",
-                            uuid,
-                            err.to_string()
-                        );
-                        // TODO: send notification
-                    }
-                }
-            } else {
-                warn!(
-                    "No data for local station {}, removing empty entry from database.",
-                    uuid
-                );
-                queries::delete_station(&uuid).unwrap();
-            }
-            return;
-        }
-
-        // Try to update station metadata from radio-browser.info
-        let mut is_orphaned = false;
-        if let Some(client) = client.get() {
-            match client.clone().station_metadata_by_uuid(&uuid).await {
-                Ok(metadata) => {
-                    let station = SwStation::new(uuid, false, false, metadata, favicon);
-
-                    // Cache data for future use
-                    let entry = StationEntry::for_station(&station);
-                    queries::update_station(entry).unwrap();
-
-                    // Add station to the library
-                    imp.model.add_station(&station);
-
-                    return;
-                }
-                Err(err) => {
-                    is_orphaned = matches!(err, Error::InvalidStation(_));
-                    warn!(
-                        "Unable to receive data for station {}, trying to use cached data: {}",
-                        uuid,
-                        err.to_string()
-                    );
-                }
-            }
-        }
-
-        // Try using cached metadata from database as fallback
-        if let Some(data) = &entry.data {
-            match serde_json::from_str(data) {
-                Ok(metadata) => {
-                    let s = SwStation::new(uuid, false, is_orphaned, metadata, favicon);
-                    imp.model.add_station(&s);
-                }
-                Err(err) => {
-                    warn!(
-                        "Unable to deserialize metadata for cached station {}: {}",
-                        uuid,
-                        err.to_string()
-                    )
-                }
-            }
-        } else {
-            warn!("Unable to load station {}, no cached data available.", uuid);
-        }
+impl Default for SwLibrary {
+    fn default() -> Self {
+        glib::Object::new()
     }
 }

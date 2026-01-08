@@ -1,13 +1,13 @@
 # Basque translation for shortwave.
 # Copyright (C) 2020 shortwave's COPYRIGHT HOLDER
 # This file is distributed under the same license as the shortwave package.
-# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2020, 2021, 2022.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2020, 2021, 2022, 2023, 2024, 2025.
 #
 msgid ""
 msgstr "Project-Id-Version: shortwave master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Shortwave/issues\n"
-"POT-Creation-Date: 2022-10-20 19:07+0000\n"
-"PO-Revision-Date: 2022-11-29 10:00+0000\n"
+"POT-Creation-Date: 2025-01-13 04:55+0000\n"
+"PO-Revision-Date: 2025-01-28 10:00+0000\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -16,104 +16,124 @@ msgstr "Project-Id-Version: shortwave master\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: data/gtk/create_station_dialog.ui:8
-msgid "Create new station"
-msgstr "Sortu irrati-estazio berria"
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:3
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:5
+msgid "@NAME@"
+msgstr "@NAME@"
 
-#: data/gtk/create_station_dialog.ui:32
-msgid "Create New Station"
-msgstr "Sortu irrati-estazio berria"
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:4
+msgid "Internet Radio Player"
+msgstr "Interneteko irratien erreproduzigailua"
 
-#: data/gtk/create_station_dialog.ui:33
+#. General
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:5
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:10
+msgid "Listen to internet radio"
+msgstr "Entzun interneteko irrratiak"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/de.haeckerfelix.Shortwave.desktop.in.in:14
+msgid "Gradio;Radio;Stream;Wave;"
+msgstr "Gradio;Irratia;Korrontea;Wave;"
+
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:12
 msgid ""
-"You can decide if you want the new station to be visible for all users "
-"worldwide or if you want to create a local station."
-msgstr "Irrati-estazio berria munduko erabiltzaile guztientzat ikusgai egongo den ala estazio lokal bat sortu nahi duzun aukeratu dezakezu."
+"Shortwave is an internet radio player that provides access to a station "
+"database with over 50,000 stations."
+msgstr "Shortwave interneteko irrati-estazioen erreproduzigailua da, 50.000 estazio baino gehiago dituen datu-base baterako sarbidea ematen duena."
 
-#: data/gtk/create_station_dialog.ui:43
-msgid "Create _Public Station"
-msgstr "Sortu irrati-estazio _publikoa"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:15
+msgid "Features:"
+msgstr "Eginbideak:"
 
-#: data/gtk/create_station_dialog.ui:54
-msgid "Create _Local Station"
-msgstr "Sortu irrati-estazio _lokala"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:17
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:64
+msgid "Create your own library where you can add your favorite stations"
+msgstr "Sortu zure liburutegi propioa zure gogoko estazioak gehitzeko"
 
-#: data/gtk/create_station_dialog.ui:80
-msgid "Create Local Station"
-msgstr "Sortu irrati-estazio lokala"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:18
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:68
+msgid "Easily search and discover new radio stations"
+msgstr "Bilatu eta aurkitu irrati-estazio berriak modu errazean"
 
-#: data/gtk/create_station_dialog.ui:113
-msgid "Change station image"
-msgstr "Aldatu irrati-estazioaren irudia"
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:19
+msgid ""
+"Automatic recognition of tracks, with the possibility to save them "
+"individually"
+msgstr "Pisten ezagutze automatikoa, haiek banaka gordetzeko aukerarekin."
 
-#: data/gtk/create_station_dialog.ui:137 src/ui/pages/search_page.rs:192
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:20
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:72
+msgid "Responsive application layout, compatible for small and large screens"
+msgstr "Aplikazio-diseinu moldagarria, pantaila txiki zein handiekin bateragarria dena"
+
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:21
+msgid "Play audio on supported network devices (e.g. Google Chromecasts)"
+msgstr "Erreproduzitu audioa onartutako sare-gailuetan (adibidez Google Chromecast)"
+
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:22
+msgid "Seamless integration into the GNOME desktop environment"
+msgstr "Josturatik gabeko integrazioa GNOME mahaigaineko ingurunearekin"
+
+#. Branding
+#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:28
+msgid "Felix Häcker"
+msgstr "Felix Häcker"
+
+#: data/gtk/add_station_dialog.ui:14
+msgid "Add Local Station"
+msgstr "Gehitu estazio lokala"
+
+#: data/gtk/add_station_dialog.ui:64
+msgid "Change Station Cover"
+msgstr "Aldatu estazioaren azala"
+
+#: data/gtk/add_station_dialog.ui:95
+msgid ""
+"This station will only be added to your library. If you want it to be "
+"available to everyone, you should add it to the <a href=\"https://www.radio-"
+"browser.info/add\">public database</a>."
+msgstr "Estazio hau zure liburutegira soilik gehituko da. Edonorentzar eskuragarri egon dadin nahi baduzu, gehitu <a href=\"https://www.radio-browser.info/add\">datu-base publikoan</a>."
+
+#: data/gtk/add_station_dialog.ui:107
 msgid "Name"
 msgstr "Izena"
 
-#: data/gtk/create_station_dialog.ui:145
+#: data/gtk/add_station_dialog.ui:115
 msgid "Stream URL"
 msgstr "Korrontearen URLa"
 
-#: data/gtk/create_station_dialog.ui:153
-msgid "Create Station"
-msgstr "Sortu irrati-estazioa"
+#: data/gtk/add_station_dialog.ui:123
+msgid "Add Station"
+msgstr "Gehitu estazioa"
 
-#: data/gtk/discover_page.ui:28
-msgid "Most Voted Stations"
-msgstr "Boto gehien dituzten estazioak"
+#: data/gtk/device_dialog.ui:7 data/gtk/player_view.ui:132
+msgid "Connect Device"
+msgstr "Konektatu gailua"
 
-#: data/gtk/discover_page.ui:43
-msgid "Trending"
-msgstr "Modan daudenak"
+#: data/gtk/device_dialog.ui:18
+msgid "Searching for Devices…"
+msgstr "Gailuak bilatzen…"
 
-#: data/gtk/discover_page.ui:58
-msgid "Other Users Are Listening To…"
-msgstr "Beste erabiltzaileak entzuten ari direnak…"
+#: data/gtk/device_dialog.ui:25
+msgid "Search for Devices"
+msgstr "Bilatu gailuak"
 
-#: data/gtk/library_page.ui:60
-msgid "Receiving Station Data…"
-msgstr "Estazioaren datuak jasotzen…"
+#: data/gtk/device_dialog.ui:41
+msgid "No Devices Available"
+msgstr "Ez dago gailurik eskuragarri"
 
-#: data/gtk/library_page.ui:87
-msgid "_Discover New Stations"
-msgstr "_Aurkitu irrati-estazio berriak"
+#: data/gtk/device_dialog.ui:42
+msgid "No supported Google Cast device found"
+msgstr "Ez da aurkitu onartutako Google Cast gailurik"
 
-#: data/gtk/mini_controller.ui:87
-msgid "SHORTWAVE INTERNET RADIO"
-msgstr "SHORTWAVE INTERNET RADIO"
+#: data/gtk/device_indicator.ui:7
+msgid "Disconnect From Device"
+msgstr "Deskonektatu gailua"
 
-#: data/gtk/mini_controller.ui:109 data/gtk/sidebar_controller.ui:63
-#: data/gtk/toolbar_controller.ui:38
-msgid "No Playback"
-msgstr "Ez dago erreprodukziorik"
-
-#: data/gtk/settings_window.ui:7 data/gtk/help_overlay.ui:11
+#: data/gtk/help_overlay.ui:11 data/gtk/preferences_dialog.ui:9
 msgid "General"
 msgstr "Orokorra"
-
-#: data/gtk/settings_window.ui:10
-msgid "Appearance"
-msgstr "Itxura"
-
-#: data/gtk/settings_window.ui:14
-msgid "_Dark Mode"
-msgstr "Gai i_luna"
-
-#: data/gtk/settings_window.ui:16
-msgid "Whether the application should use a dark theme"
-msgstr "Aplikazioak gai iluna erabiliko duen ala ez"
-
-#: data/gtk/settings_window.ui:29
-msgid "Features"
-msgstr "Ezaugarriak"
-
-#: data/gtk/settings_window.ui:32
-msgid "_Notifications"
-msgstr "_Jakinarazpenak"
-
-#: data/gtk/settings_window.ui:34
-msgid "Show desktop notifications when a new song gets played"
-msgstr "Erakutsi mahaiganeko jakinarazpenak abesti berriak erreproduzitzen direnean"
 
 #: data/gtk/help_overlay.ui:14
 msgctxt "shortcut window"
@@ -132,437 +152,790 @@ msgstr "Ireki hobespenak"
 
 #: data/gtk/help_overlay.ui:32
 msgctxt "shortcut window"
+msgid "Close the window"
+msgstr "Itxi leihoa"
+
+#: data/gtk/help_overlay.ui:38
+msgctxt "shortcut window"
 msgid "Quit the application"
 msgstr "Irten aplikaziotik"
 
-#: data/gtk/help_overlay.ui:40
-msgid "Window"
-msgstr "Leihoa"
-
-#: data/gtk/help_overlay.ui:43
-msgctxt "shortcut window"
-msgid "Open library view"
-msgstr "Ireki liburutegi-ikuspegia"
-
-#: data/gtk/help_overlay.ui:49
-msgctxt "shortcut window"
-msgid "Open discover view"
-msgstr "Ireki aurkitze-ikuspegia"
-
-#: data/gtk/help_overlay.ui:55
-msgctxt "shortcut window"
-msgid "Open search view"
-msgstr "Ireki bilaketa-ikuspegia"
-
-#: data/gtk/help_overlay.ui:61
-msgctxt "shortcut window"
-msgid "Go back"
-msgstr "Joan atzera"
-
-#: data/gtk/help_overlay.ui:67
-msgctxt "shortcut window"
-msgid "Refresh station data"
-msgstr "Freskatu estazioaren datuak"
-
-#: data/gtk/help_overlay.ui:75
+#: data/gtk/help_overlay.ui:46 data/gtk/preferences_dialog.ui:12
 msgid "Playback"
 msgstr "Erreproduzitu"
 
-#: data/gtk/help_overlay.ui:78
+#: data/gtk/help_overlay.ui:49
 msgctxt "shortcut window"
 msgid "Toggle playback"
 msgstr "Txandakatu erreprodukzioa"
 
-#: data/gtk/search_page.ui:31 data/gtk/station_dialog.ui:200
-#: src/ui/pages/search_page.rs:196
-msgid "Votes"
-msgstr "Botoak"
+#: data/gtk/help_overlay.ui:57 data/gtk/volume_control.ui:21
+msgid "Volume"
+msgstr "Bolumena"
 
-#: data/gtk/search_page.ui:36
-msgid "Change the sorting of the search results"
-msgstr "Aldatu bilaketaren emaitzen ordena"
+#: data/gtk/help_overlay.ui:60
+msgctxt "shortcut window"
+msgid "Toggle mute"
+msgstr "Aktibatu/desaktibatu mututzea"
 
-#: data/gtk/search_page.ui:63
-msgid "No Results"
-msgstr "Ez dago emaitzarik"
+#: data/gtk/help_overlay.ui:66
+msgctxt "shortcut window"
+msgid "Increase volume"
+msgstr "Igo bolumena"
 
-#: data/gtk/search_page.ui:64
-msgid "Try using a different search term"
-msgstr "Saiatu berriro bilaketako beste termino batekin"
+#: data/gtk/help_overlay.ui:72
+msgctxt "shortcut window"
+msgid "Decrease volume"
+msgstr "Jaitsi bolumena"
 
-#: data/gtk/search_page.ui:148 data/gtk/window.ui:170
+#: data/gtk/library_page.ui:4
+msgid "Shortwave"
+msgstr "Shortwave"
+
+#: data/gtk/library_page.ui:15 data/gtk/search_page.ui:4
+msgid "Browse Stations"
+msgstr "Arakatu estazioak"
+
+#: data/gtk/library_page.ui:23
+msgid "Main Menu"
+msgstr "Menu nagusia"
+
+#: data/gtk/library_page.ui:92
+msgid "_Add New Stations"
+msgstr "_Gehitu irrati-estazio berriak"
+
+#: data/gtk/library_page.ui:115
+msgid "_Sorting"
+msgstr "O_rdenatu"
+
+#: data/gtk/library_page.ui:118
 msgid "_Name"
-msgstr "I_zena"
+msgstr "_Izena"
 
-#: data/gtk/search_page.ui:153 data/gtk/window.ui:175
+#: data/gtk/library_page.ui:123
 msgid "_Language"
 msgstr "_Hizkuntza"
 
-#: data/gtk/search_page.ui:158 data/gtk/window.ui:180
+#: data/gtk/library_page.ui:128
 msgid "_Country"
 msgstr "He_rrialdea"
 
-#: data/gtk/search_page.ui:163 data/gtk/window.ui:185
+#: data/gtk/library_page.ui:133
 msgid "S_tate"
 msgstr "E_statuta"
 
-#: data/gtk/search_page.ui:168 data/gtk/window.ui:190
-msgid "_Votes"
-msgstr "_Botoak"
-
-#: data/gtk/search_page.ui:173 data/gtk/window.ui:195
+#: data/gtk/library_page.ui:138
 msgid "_Bitrate"
 msgstr "_Bit-emaria"
 
-#: data/gtk/search_page.ui:180 data/gtk/window.ui:202
+#: data/gtk/library_page.ui:145
 msgid "_Ascending"
-msgstr "Gora_ntz"
+msgstr "Go_rantz"
 
-#: data/gtk/search_page.ui:185 data/gtk/window.ui:207
+#: data/gtk/library_page.ui:150
 msgid "_Descending"
-msgstr "Beheran_tz"
+msgstr "Be_herantz"
 
-#: data/gtk/sidebar_controller.ui:22
+#: data/gtk/library_page.ui:159
+msgid "_Open radio-browser.info <sup>↗</sup>"
+msgstr "_Ireki radio-browser.info <sup>↗</sup>"
+
+#: data/gtk/library_page.ui:166
+msgid "_Preferences"
+msgstr "_Hobespenak"
+
+#: data/gtk/library_page.ui:170
+msgid "_Keyboard Shortcuts"
+msgstr "Las_ter-teklak"
+
+#: data/gtk/library_page.ui:174
+msgid "_About Shortwave"
+msgstr "Shortwave aplikazioari _buruz"
+
+#: data/gtk/library_page.ui:178
+msgid "_Quit"
+msgstr "I_rten"
+
+#: data/gtk/library_page.ui:186
+msgid "Add _Local Station"
+msgstr "Gehitu irrati-estazio _lokala"
+
+#: data/gtk/player_gadget.ui:40 data/gtk/player_toolbar.ui:92
+#: data/gtk/player_view.ui:156 data/gtk/station_row.ui:86
+msgid "Play"
+msgstr "Erreproduzitu"
+
+#: data/gtk/player_gadget.ui:55 data/gtk/player_toolbar.ui:106
+#: data/gtk/player_view.ui:170
+msgid "Stop"
+msgstr "Gelditu"
+
+#: data/gtk/player_gadget.ui:71 data/gtk/player_toolbar.ui:121
+#: data/gtk/player_view.ui:185
+msgid "Buffering…"
+msgstr "Bufferreratzen…"
+
+#: data/gtk/player_gadget.ui:118
+msgid "SHORTWAVE INTERNET RADIO"
+msgstr "SHORTWAVE INTERNET RADIO"
+
+#: data/gtk/player_gadget.ui:140 data/gtk/player_toolbar.ui:29
+#: data/gtk/player_view.ui:58 src/app.rs:257
+msgid "No Playback"
+msgstr "Ez dago erreprodukziorik"
+
+#: data/gtk/player_gadget.ui:199
+msgid "Close"
+msgstr "Itxi"
+
+#: data/gtk/player_gadget.ui:210
+msgid "Restore Window"
+msgstr "Leheneratu leihoa"
+
+#: data/gtk/player_view.ui:13
+msgid "Enable Gadget Mode"
+msgstr "Gaitu gailu-modua"
+
+#: data/gtk/player_view.ui:215
+msgid "Show Station Details"
+msgstr "Erakutsi estazioaren xehetasunak"
+
+#: data/gtk/player_view.ui:266
+msgid "No Tracks"
+msgstr "Pistarik ez"
+
+#: data/gtk/player_view.ui:277
+msgid "Played tracks will appear here"
+msgstr "Erreproduzitutako pistak hemen agertuko dira"
+
+#: data/gtk/player_view.ui:311
 msgid "An error occurred"
 msgstr "Errorea gertatu da"
 
-#: data/gtk/sidebar_controller.ui:187
-msgid "_Show Station Details"
-msgstr "_Erakutsi estazioaren xehetasunak"
+#: data/gtk/preferences_dialog.ui:15
+msgid "_Background Playback"
+msgstr "A_tzeko planoko erreprodukzioa"
 
-#: data/gtk/sidebar_controller.ui:191
-msgid "Stream to a _Device"
-msgstr "Bidali korrontea _gailu bati"
+#: data/gtk/preferences_dialog.ui:16
+msgid "Playback continues when window is closed"
+msgstr "Erreprodukzioak jarraitu egingo du leihoa ixtean"
 
-#: data/gtk/song_listbox.ui:28
-msgid "No Songs Detected"
-msgstr "Ez da abestirik detektatu"
+#: data/gtk/preferences_dialog.ui:28
+msgid "_Notifications"
+msgstr "_Jakinarazpenak"
 
-#: data/gtk/song_listbox.ui:39
+#: data/gtk/preferences_dialog.ui:29
+msgid "Show desktop notifications when a new track gets played"
+msgstr "Erakutsi mahaigaineko jakinarazpenak pista berri bat erreproduzitzen denean"
+
+#: data/gtk/preferences_dialog.ui:43
+msgid "Recording"
+msgstr "Grabazioa"
+
+#: data/gtk/preferences_dialog.ui:44
 msgid ""
-"Songs are automatically recognized using the stream metadata.\n"
-"\n"
-"If the station does not send any metadata, no songs can be recognized."
-msgstr "Abestiak automatikoki ezagutuko dira korrontearen metadatuak erabilita.\n"
-"\n"
-"Estazioak ez badu metadaturik bidaltzen, abestiak ez dira ezagutuko."
+"Tracks are automatically recognised based on the station stream metadata and "
+"can be saved."
+msgstr "Pistak automatikoki ezagutuko dira irrati-estazioaren korrontearen metadatuetan oinarrituta, eta gorde egin daiteke."
 
-#: data/gtk/song_listbox.ui:75
-msgid "Saved songs are located in your Music folder."
-msgstr "Gordetako abestiak zure 'Musika' karpetan egongo dira."
+#: data/gtk/preferences_dialog.ui:47
+msgid "Track _Directory"
+msgstr "Pisten _direktorioa"
 
-#: data/gtk/song_listbox.ui:85
-msgid "_Open"
-msgstr "_Ireki"
+#: data/gtk/preferences_dialog.ui:69
+msgid "Save _All Tracks"
+msgstr "Gorde pista _guztiak"
 
-#: data/gtk/song_row.ui:16
-msgid "Save recorded song"
-msgstr "Gorde grabatutako abestia"
+#: data/gtk/preferences_dialog.ui:70
+msgid "All recorded tracks are automatically saved in the track directory"
+msgstr "Grabatutako pista guztiak automatikoki gordeko dira pisten direktorioan"
 
-#: data/gtk/station_dialog.ui:8
-msgid "Station details"
-msgstr "Irrati-estazioaren xehetasunak"
+#: data/gtk/preferences_dialog.ui:84
+msgid "Decide for Each _Track"
+msgstr "Erabaki _pistaz pista"
 
-#: data/gtk/station_dialog.ui:87
-msgid "_Play Station"
-msgstr "_Erreproduzitu estazioa"
+#: data/gtk/preferences_dialog.ui:85
+msgid "Tracks are temporarily recorded and can be saved if desired"
+msgstr "Pistak aldi baterako grabatzen dira eta gorde egin daitezke, nahi izanez gero"
 
-#: data/gtk/station_dialog.ui:101
+#: data/gtk/preferences_dialog.ui:100
+msgid "Record N_othing"
+msgstr "Ez grabatu _ezer"
+
+#: data/gtk/preferences_dialog.ui:101
+msgid "Stations are played without recording"
+msgstr "Irrati-estazioak grabaziorik gabe erreproduzitzen dira"
+
+#: data/gtk/preferences_dialog.ui:120
+msgid "M_aximum Duration"
+msgstr "G_ehieneko iraupena"
+
+#: data/gtk/preferences_dialog.ui:121
+msgid "Recording ends when the maximum duration is reached"
+msgstr "Grabazioa amaitzen da gehieneko iraupenera iristean"
+
+#: data/gtk/preferences_dialog.ui:136
+msgid "M_inimum Duration"
+msgstr "G_utxieneko iraupena"
+
+#: data/gtk/preferences_dialog.ui:137
+msgid "Tracks shorter than the minimum duration will be ignored"
+msgstr "Gutxieneko iraupena duten pistei ez ikusiarena egingo zaie"
+
+#: data/gtk/search_page.ui:23
+msgid "Search"
+msgstr "Bilatu"
+
+#: data/gtk/search_page.ui:24
+msgid "Search stations"
+msgstr "Bilatu irrati-estazioak"
+
+#: data/gtk/search_page.ui:72
+msgid "Discover over 50,000 public stations"
+msgstr "Aurkitu 50.000 estazio publiko baino gehiago"
+
+#: data/gtk/search_page.ui:90
+msgid "Popular Stations"
+msgstr "Irrati-estazio ospetsuak"
+
+#: data/gtk/search_page.ui:112
+msgid "Discover New Stations"
+msgstr "Aurkitu irrati-estazio berriak"
+
+#: data/gtk/search_page.ui:135
+msgid ""
+"The displayed information is provided by <a href=\"https://www.radio-browser."
+"info/\">radio-browser.info</a>. \n"
+"Shortwave has no influence on the listed stations."
+msgstr "Erakutsitako informazioa <a href=\"https://www.radio-browser.info/\">radio-browser.info</a> guneak eskaintzen du. \n"
+"Shortwave aplikzioak ez du eraginik estazioen zerrendan."
+
+#: data/gtk/search_page.ui:201
+msgid "Loading…"
+msgstr "Kargatzen…"
+
+#: data/gtk/search_page.ui:216
+msgid "No Results"
+msgstr "Ez dago emaitzarik"
+
+#: data/gtk/search_page.ui:217
+msgid ""
+"If the station you are looking for is missing, you can add it to the public "
+"database."
+msgstr "Bilatzen ari zaren irrati-estazioa falta bada, datu-base publikoari gehitu diezaiokezu."
+
+#: data/gtk/search_page.ui:221
+msgid "Add Missing Station"
+msgstr "Gehitu falta den irrati-estazioa"
+
+#: data/gtk/search_page.ui:239
+msgid "Unable to Retrieve Station Data"
+msgstr "Ezin dira estazioaren datuak jaso"
+
+#: data/gtk/search_page.ui:242
+msgid "Try Again"
+msgstr "Saiatu berriro"
+
+#: data/gtk/station_dialog.ui:75
+msgid "_Play"
+msgstr "_Erreproduzitu"
+
+#: data/gtk/station_dialog.ui:91
 msgid "_Add to Library"
 msgstr "_Gehitu liburutegiari"
 
-#: data/gtk/station_dialog.ui:116
+#: data/gtk/station_dialog.ui:108
 msgid "_Remove From Library"
 msgstr "_Kendu liburutegitik"
 
-#: data/gtk/station_dialog.ui:133
+#: data/gtk/station_dialog.ui:127 data/gtk/station_row.ui:57
 msgid "Local Station"
 msgstr "Irrati-estazio lokala"
 
-#: data/gtk/station_dialog.ui:134
+#: data/gtk/station_dialog.ui:128
 msgid ""
 "This station exists only in your library, and is not part of the public "
-"online station database."
-msgstr "Estazio hau zure liburutegian soilik dago, eta ez dago lineako estazio publikoen datu-basean"
+"database"
+msgstr "Estazioa zure liburutegian soilik dago, ez dago datu-base publikoan"
 
-#: data/gtk/station_dialog.ui:149
+#: data/gtk/station_dialog.ui:142 data/gtk/station_row.ui:69
 msgid "Orphaned Station"
 msgstr "Estazio umezurtza"
 
-#: data/gtk/station_dialog.ui:150
+#: data/gtk/station_dialog.ui:143
 msgid ""
 "The information could not be updated, probably this station was removed from "
-"the public online station database."
-msgstr "Informazioa ezin da eguneratu, beharbada estazio hau kendu egin da lineako estazioen datu-base publikotik."
+"the public database"
+msgstr "Informazioa ezin da eguneratu, ziur aski irrati-estazio hau kendu egin da datu-base publikotik"
 
-#: data/gtk/station_dialog.ui:162
+#: data/gtk/station_dialog.ui:154
 msgid "Information"
 msgstr "Informazioa"
 
-#: data/gtk/station_dialog.ui:165 src/ui/pages/search_page.rs:193
+#: data/gtk/station_dialog.ui:157
 msgid "Language"
 msgstr "Hizkuntza"
 
-#: data/gtk/station_dialog.ui:180
+#: data/gtk/station_dialog.ui:167
 msgid "Tags"
 msgstr "Etiketak"
 
-#: data/gtk/station_dialog.ui:216
+#: data/gtk/station_dialog.ui:179
 msgid "Location"
 msgstr "Kokalekua"
 
-#: data/gtk/station_dialog.ui:221 src/ui/pages/search_page.rs:194
+#: data/gtk/station_dialog.ui:183
 msgid "Country"
 msgstr "Herrialdea"
 
-#: data/gtk/station_dialog.ui:241 src/ui/pages/search_page.rs:195
+#: data/gtk/station_dialog.ui:193
 msgid "State"
-msgstr "Estatua"
+msgstr "Egoera"
 
-#: data/gtk/station_dialog.ui:285
+#: data/gtk/station_dialog.ui:227
 msgid "Audio"
 msgstr "Audioa"
 
-#: data/gtk/station_dialog.ui:289 src/ui/pages/search_page.rs:197
+#: data/gtk/station_dialog.ui:230
 msgid "Bitrate"
 msgstr "Bit-emaria"
 
-#: data/gtk/station_dialog.ui:304
+#: data/gtk/station_dialog.ui:240
 msgid "Codec"
 msgstr "Kodeka"
 
 #. This is a noun/label for the station stream url
-#: data/gtk/station_dialog.ui:319
+#: data/gtk/station_dialog.ui:250
 msgid "Stream"
-msgstr "Korrontea"
+msgstr "Transmititu"
 
-#: data/gtk/streaming_dialog.ui:10
-msgid "Stream to a Device"
-msgstr "Bidali korrontea gailu bati"
+#: data/gtk/station_dialog.ui:256
+msgid "Copy"
+msgstr "Kopiatu"
 
-#: data/gtk/streaming_dialog.ui:26
+#: data/gtk/track_dialog.ui:74
+msgid "Edit"
+msgstr "Editatu"
+
+#: data/gtk/track_dialog.ui:121
+msgid "The recorded track has been saved"
+msgstr "Grabatutako pista gorde da"
+
+#: data/gtk/track_dialog.ui:137 data/gtk/track_dialog.ui:208
+#: data/gtk/track_row.ui:9 src/audio/player.rs:440
+msgid "Save Track"
+msgstr "Gorde pista"
+
+#: data/gtk/track_dialog.ui:148
+msgid "Play Track"
+msgstr "Erreproduzitu pista"
+
+#: data/gtk/track_dialog.ui:159
+msgid "Cancel Recording"
+msgstr "Utzi grabazioa"
+
+#: data/gtk/track_dialog.ui:175
+msgid "Station"
+msgstr "Irrati-estazioa"
+
+#: data/gtk/track_dialog.ui:209
+msgid "Save this track when recording is complete"
+msgstr "Gorde pista hau grabazioa osatu denean"
+
+#: data/gtk/track_dialog.ui:223
+msgid "Recording behaviour can be changed in <a href=\"\">preferences</a>"
+msgstr "Grabazioaren portaera <a href=\"\">hobespenetan</a> aldatu daiteke"
+
+#: data/gtk/track_row.ui:20
+msgid "Saved"
+msgstr "Gordeta"
+
+#: data/gtk/volume_control.ui:9
+msgid "Toggle Mute"
+msgstr "Aktibatu/desaktibatu mututzea"
+
+#: src/app.rs:85
+msgid "Track no longer available"
+msgstr "Pista ez dago eskuragarri jadanik"
+
+#: src/app.rs:108 src/app.rs:130
+msgid "This track is currently not recorded"
+msgstr "Pista hau ez dago grabatuta"
+
+#: src/app.rs:261
+msgid "Playing “{}”"
+msgstr "“{}” erreproduzitzen"
+
+#: src/app.rs:361
+msgid "Active Playback"
+msgstr "Erreprodukzio aktiboa"
+
+#: src/audio/player.rs:450
+msgid "Don't Record"
+msgstr "Ez grabatu"
+
+#: src/audio/recording_state.rs:49 src/audio/recording_state.rs:51
+msgid "Not Recorded"
+msgstr "Grabatu gabea"
+
+#: src/audio/recording_state.rs:50
+msgid "Ignored Track"
+msgstr "Ez ikusitako pista"
+
+#: src/audio/recording_state.rs:53
+msgid "Recording…"
+msgstr "Grabatzen…"
+
+#: src/audio/recording_state.rs:54
+msgid "Recorded"
+msgstr "Grabatua"
+
+#: src/audio/recording_state.rs:56
+msgid "Below Threshold"
+msgstr "Atalasearen azpitik"
+
+#: src/audio/recording_state.rs:57
+msgid "Cancelled"
+msgstr "Bertan behera utzita"
+
+#: src/audio/recording_state.rs:63
+msgid "Recording is deactivated in preferences"
+msgstr "Grabazioa desaktibatuta dago hobespenetan"
+
+#: src/audio/recording_state.rs:65
+msgid "The track contains a word that is on the ignore list"
+msgstr "Pistak ez ikusiarena egiteko hitzen zerrendan dagoen hitz bat du"
+
+#: src/audio/recording_state.rs:68
 msgid ""
-"Audio playback can be streamed to a network device (requires Google Cast "
-"support)."
-msgstr "Audio-erreprodukzioa sareko gailu batera bidali daiteke (Google Cast euskarria behar du)."
+"The track wasn't played from the beginning, so it can't be fully recorded"
+msgstr "Pista ez denez hasieratik erreproduzitu, ezin da osorik grabatu"
 
-#: data/gtk/streaming_dialog.ui:41
-msgid "No Devices Found"
-msgstr "Ez da gailurik aurkitu"
+#: src/audio/recording_state.rs:71
+msgid "The track will be recorded until a new track gets played"
+msgstr "Pista grabatuko da pista berri bat erreproduzitzen hasi arte"
 
-#: data/gtk/streaming_dialog.ui:47 data/gtk/streaming_dialog.ui:70
-msgid "Search again"
-msgstr "Bilatu berriro"
+#: src/audio/recording_state.rs:73
+msgid "The track has been temporarily recorded"
+msgstr "Pista behin-behinean grabatu da"
 
-#: data/gtk/streaming_dialog.ui:64
-msgid "Search Completed"
-msgstr "Bilaketa osatu da"
-
-#: data/gtk/streaming_dialog.ui:87
-msgid "Searching for Devices…"
-msgstr "Gailuak bilatzen…"
-
-#: data/gtk/window.ui:27
-msgid "Add Stations"
-msgstr "Gehitu estazioak"
-
-#: data/gtk/window.ui:34
-msgid "Go Back"
-msgstr "Joan atzera"
-
-#: data/gtk/window.ui:41
-msgid "Open Application Menu"
-msgstr "Ireki aplikazioaren menua"
-
-#: data/gtk/window.ui:50
-msgid "Open Search"
-msgstr "Ireki bilaketa"
-
-#: data/gtk/window.ui:74
-msgid "Unable to connect to radio-browser.info"
-msgstr "Ezin da radio-browser.info gunearekin konektatu"
-
-#: data/gtk/window.ui:84
+#: src/audio/recording_state.rs:75
 msgid ""
-"Access to the public online station database is not available. Ensure that "
-"you are connected to the internet."
-msgstr "Irrati-estazioen lineako datu-base publikoa ez dago erabilgarri. Ziurtatu internetekin konektatuta zaudela."
+"The track has been discarded as the duration was below the set threshold"
+msgstr "Pista baztertu egin da bere iraupena ezarritako atalasetik behera dagoelako"
 
-#: data/gtk/window.ui:93
-msgid "Try again"
-msgstr "Saiatu berriro"
+#: src/audio/recording_state.rs:77
+msgid "Recording has been cancelled"
+msgstr "Grabazioa bertan behera utzi da"
 
-#: data/gtk/window.ui:159 data/gtk/window.ui:248
-msgid "_Enable Mini Player"
-msgstr "Gaitu _mini erreproduzigailua"
+#: src/device/device_discovery.rs:83
+msgid "Google Cast Device"
+msgstr "Google Cast gailua"
 
-#: data/gtk/window.ui:163 data/gtk/window.ui:244
-msgid "_Refresh Station Data"
-msgstr "_Freskatu estazioaren datuak"
+#: src/device/device_discovery.rs:86
+msgid "Unknown Model"
+msgstr "Modelo ezezaguna"
 
-#: data/gtk/window.ui:167
-msgid "_Sorting"
-msgstr "O_rdenatu"
-
-#: data/gtk/window.ui:216 data/gtk/window.ui:254
-msgid "_Open radio-browser.info <sup>↗</sup>"
-msgstr "_Ireki radio-browser.info <sup>↗</sup>"
-
-#: data/gtk/window.ui:221 data/gtk/window.ui:259
-msgid "_Create New Station"
-msgstr "_Sortu irrati-estazio berria"
-
-#: data/gtk/window.ui:228 data/gtk/window.ui:266
-msgid "_Preferences"
-msgstr "_Hobespenak"
-
-#: data/gtk/window.ui:232 data/gtk/window.ui:270
-msgid "_Keyboard Shortcuts"
-msgstr "Las_ter-teklak"
-
-#: data/gtk/window.ui:236 data/gtk/window.ui:274
-msgid "_About Shortwave"
-msgstr "Shortwave aplikazioari _buruz"
-
-#. Fallback to xdg-home when xdg-music is not available
-#: src/audio/backend/song_backend.rs:96
-msgid "Unable to access music directory. Saving song in home directory."
-msgstr "Ezin da musika-direktorioan sartu. Abestia direktorio nagusian gordetzen."
-
-#: src/audio/player.rs:198
-msgid "Station cannot be streamed. URL is not valid."
-msgstr "Estazioa ezin da korronte bidez eskaini. URLa ez da baliozkoa."
-
-#: src/audio/player.rs:253
-msgid "Cannot save song."
-msgstr "Ezin da abestia gorde."
-
-#: src/ui/about_window.rs:35
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:6
-msgid "Listen to internet radio"
-msgstr "Entzun interneteko irrratiak"
-
-#: src/ui/about_window.rs:46
+#: src/ui/about_dialog.rs:44
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr "Asier Sarasua Garmendia <asiersarasua@ni.eus>"
 
-#. TODO: Implement show-server-stats action
-#: src/ui/pages/discover_page.rs:117
-msgid "Show statistics"
-msgstr "Erakutsi estatistikak"
+#: src/ui/add_station_dialog.rs:94
+msgid "Select Station Cover"
+msgstr "Hautatu irrati-estazioaren azala"
 
-#: src/ui/pages/discover_page.rs:119
-msgid "Browse over 30,000 stations"
-msgstr "Arakatu 30.000 irrati-estazio artean"
+#: src/ui/display_error.rs:50
+msgid "Show Details"
+msgstr "Erakutsi xehetasunak"
 
-#: src/ui/pages/discover_page.rs:121
-msgid "Add new station"
-msgstr "Gehitu estazio berria"
-
-#: src/ui/pages/discover_page.rs:123
-msgid "Your favorite station is missing?"
-msgstr "Zure irratirik gogokoena falta al da?"
-
-#: src/ui/pages/discover_page.rs:128
-msgid "Open website"
-msgstr "Ireki webgunea"
-
-#: src/ui/pages/discover_page.rs:130
-msgid "Powered by radio-browser.info"
-msgstr "radio-browser.info darabil"
-
-#: src/ui/pages/discover_page.rs:149 src/ui/pages/search_page.rs:286
-msgid "Station data could not be received."
-msgstr "Estazioaren datuak ezin izan dira jaso."
-
-#: src/ui/pages/library_page.rs:117
+#: src/ui/pages/library_page.rs:111
 msgid "Welcome to {}"
 msgstr "Ongi etorri {} aplikaziora"
 
-#: src/ui/pages/search_page.rs:102
-msgid ""
-"The number of results is limited to {} item. Try using a more specific "
-"search term."
-msgid_plural ""
-"The number of results is limited to {} items. Try using a more specific "
-"search term."
-msgstr[0] "Emaitza kopurua elementu {}ekoa da. Saiatu bilaketa-termino zehatzagoa erabilita."
-msgstr[1] "Emaitza kopurua {} elementukoa da. Saiatu bilaketa-termino zehatzagoa erabilita."
+#: src/ui/preferences_dialog.rs:139
+msgid "Select Save Directory"
+msgstr "Hautatu gordetzeko direktorioa"
 
-#: src/ui/station_dialog.rs:286
+#: src/ui/preferences_dialog.rs:140
+msgid "_Select"
+msgstr "_Hautatu"
+
+#: src/ui/preferences_dialog.rs:163
+msgid "{} min"
+msgid_plural "{} min"
+msgstr[0] "{} min"
+msgstr[1] "{} min"
+
+#: src/ui/preferences_dialog.rs:172
+msgid "{} sec"
+msgid_plural "{} sec"
+msgstr[0] "{} seg"
+msgstr[1] "{} seg"
+
+#: src/ui/station_dialog.rs:205
 msgid "{} kbit/s"
 msgstr "{} kbit/s"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:5
-#: data/de.haeckerfelix.Shortwave.desktop.in.in:3
-msgid "@NAME@"
-msgstr "@NAME@"
+#: src/ui/station_dialog.rs:290
+msgid "Copied"
+msgstr "Kopiatua"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:8
-msgid "Felix Häcker"
-msgstr "Felix Häcker"
+#: src/ui/window.rs:221
+msgid "No Permission for Background Playback"
+msgstr "Baimenik ez atzeko planoko erreprodukziorako"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:16
-msgid ""
-"Shortwave is an internet radio player that provides access to a station "
-"database with over 30,000 stations."
-msgstr "Shortwave interneteko irrati-estazioen erreproduzigailua da, 30.000 estazio baino gehiago dituen datu-base baterako sarbidea ematen duena."
+#: src/ui/window.rs:223
+msgid "“Run in Background” must be allowed for this app in system settings."
+msgstr "“Exekutatu atzeko planoan” onartu behar da aplikazio honetarako sistemaren ezarpenetan."
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:19
-msgid "Features:"
-msgstr "Eginbideak:"
+#: src/ui/window.rs:227
+msgid "Try Anyway"
+msgstr "Saiatu dena den"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:21
-msgid "Create your own library where you can add your favorite stations"
-msgstr "Sortu zure liburutegi propioa zure gogoko estazioak gehitzeko"
+#: src/ui/window.rs:228
+msgid "Disable Background Playback"
+msgstr "Desgaitu atzeko planoko erreprodukzioa"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:22
-msgid "Easily search and discover new radio stations"
-msgstr "Bilatu eta aurkitu irrati-estazio berriak modu errazean"
+#: src/utils.rs:51
+msgid "{} hour"
+msgid_plural "{} hours"
+msgstr[0] "Ordu {}"
+msgstr[1] "{} ordu"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:23
-msgid ""
-"Automatic recognition of songs, with the possibility to save them "
-"individually"
-msgstr "Ezagutu abestiak automatikoki, eta gorde haiek banaka."
+#: src/utils.rs:57
+msgid "{} minute"
+msgid_plural "{} minutes"
+msgstr[0] "Minutu {}"
+msgstr[1] "{} minutu"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:24
-msgid "Responsive application layout, compatible for small and large screens"
-msgstr "Aplikazio-diseinu moldagarria, pantaila txiki zein handiekin bateragarria dena"
+#: src/utils.rs:63
+msgid "{} second"
+msgid_plural "{} seconds"
+msgstr[0] "Segundo {}"
+msgstr[1] "{} segundo"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:25
-msgid "Play audio on supported network devices (e.g. Google Chromecasts)"
-msgstr "Erreproduzitu audioa onartutako sare-gailuetan (adibidez Google Chromecast)"
+#: src/utils.rs:75
+msgid "0 seconds"
+msgstr "0 segundo"
 
-#: data/de.haeckerfelix.Shortwave.metainfo.xml.in.in:26
-msgid "Seamless integration into the GNOME desktop environment"
-msgstr "Josturatik gabeko integrazioa GNOME mahaigaineko ingurunearekin"
+#~ msgid "Create new station"
+#~ msgstr "Sortu irrati-estazio berria"
 
-#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/de.haeckerfelix.Shortwave.desktop.in.in:12
-msgid "Gradio;Radio;Stream;Wave;"
-msgstr "Gradio;Irratia;Korrontea;Wave;"
+#~ msgid "Create New Station"
+#~ msgstr "Sortu irrati-estazio berria"
 
-#~ msgid "Detected songs will appear here."
-#~ msgstr "Detektatutako abestiak hemen agertuko dira."
+#~ msgid ""
+#~ "You can decide if you want the new station to be visible for all users "
+#~ "worldwide or if you want to create a local station."
+#~ msgstr ""
+#~ "Irrati-estazio berria munduko erabiltzaile guztientzat ikusgai egongo den "
+#~ "ala estazio lokal bat sortu nahi duzun aukeratu dezakezu."
+
+#~ msgid "Create _Public Station"
+#~ msgstr "Sortu irrati-estazio _publikoa"
+
+#~ msgid "Create _Local Station"
+#~ msgstr "Sortu irrati-estazio _lokala"
+
+#~ msgid "Create Local Station"
+#~ msgstr "Sortu irrati-estazio lokala"
+
+#~ msgid "Create Station"
+#~ msgstr "Sortu irrati-estazioa"
+
+#~ msgid "Discover"
+#~ msgstr "Aurkitu"
+
+#~ msgid "Trending"
+#~ msgstr "Modan daudenak"
+
+#~ msgid "Other Users Are Listening To…"
+#~ msgstr "Beste erabiltzaileak entzuten ari direnak…"
+
+#~ msgid "Previous"
+#~ msgstr "Aurrekoa"
+
+#~ msgid "Next"
+#~ msgstr "Hurrengoa"
+
+#~ msgid "Library"
+#~ msgstr "Liburutegia"
+
+#~ msgid "_Votes"
+#~ msgstr "_Botoak"
+
+#~ msgid "_Create New Station"
+#~ msgstr "_Sortu irrati-estazio berria"
+
+#~ msgid "Resize"
+#~ msgstr "Aldatu tamaina"
+
+#~ msgid "No Songs"
+#~ msgstr "Abestirik ez"
+
+#~ msgid ""
+#~ "Songs that have been identified and recorded using the stream metadata "
+#~ "will appear here."
+#~ msgstr ""
+#~ "Korrontearen metadatuen bidez identifikatu eta grabatu diren abestiak "
+#~ "hemen agertuko dira."
+
+#~ msgid "Votes"
+#~ msgstr "Botoak"
+
+#~ msgid "Change the sorting of the search results"
+#~ msgstr "Aldatu bilaketaren emaitzen ordena"
+
+#~ msgid "Try using a different search term"
+#~ msgstr "Saiatu berriro bilaketako beste termino batekin"
+
+#~ msgid "Search Results"
+#~ msgstr "Bilaketaren emaitzak"
+
+#~ msgid "Features"
+#~ msgstr "Ezaugarriak"
+
+#~ msgid "No Songs Detected"
+#~ msgstr "Ez da abestirik detektatu"
+
+#~ msgid "Saved songs are located in your Music folder."
+#~ msgstr "Gordetako abestiak zure 'Musika' karpetan egongo dira."
+
+#~ msgid "_Open"
+#~ msgstr "_Ireki"
+
+#~ msgid "Save recorded song"
+#~ msgstr "Gorde grabatutako abestia"
+
+#~ msgid "Station cannot be streamed. URL is not valid."
+#~ msgstr "Estazioa ezin da korronte bidez eskaini. URLa ez da baliozkoa."
+
+#~ msgid "Show statistics"
+#~ msgstr "Erakutsi estatistikak"
+
+#~ msgid "Add new station"
+#~ msgstr "Gehitu estazio berria"
+
+#~ msgid "Your favorite station is missing?"
+#~ msgstr "Zure irratirik gogokoena falta al da?"
+
+#~ msgid "Open website"
+#~ msgstr "Ireki webgunea"
+
+#~ msgid "Powered by radio-browser.info"
+#~ msgstr "radio-browser.info darabil"
+
+#~ msgid "Station data could not be received."
+#~ msgstr "Estazioaren datuak ezin izan dira jaso."
+
+#~ msgid ""
+#~ "The number of results is limited to {} item. Try using a more specific "
+#~ "search term."
+#~ msgid_plural ""
+#~ "The number of results is limited to {} items. Try using a more specific "
+#~ "search term."
+#~ msgstr[0] ""
+#~ "Emaitza kopurua elementu {}ekoa da. Saiatu bilaketa-termino zehatzagoa "
+#~ "erabilita."
+#~ msgstr[1] ""
+#~ "Emaitza kopurua {} elementukoa da. Saiatu bilaketa-termino zehatzagoa "
+#~ "erabilita."
+
+#~ msgid "Incomplete"
+#~ msgstr "Osatu gabea"
+
+#~ msgid ""
+#~ "The current song cannot be fully recorded. The beginning has been missed."
+#~ msgstr "Uneko abestia ezin da osorik grabatu. Hasiera galdu da."
+
+#~ msgid "Receiving Station Data…"
+#~ msgstr "Estazioaren datuak jasotzen…"
+
+#~ msgid "Start"
+#~ msgstr "Hasi"
+
+#~ msgid "Back"
+#~ msgstr "Atzera"
+
+#~ msgid "Station Menu"
+#~ msgstr "Estazioen menua"
+
+#~ msgid "Stream to a _Device"
+#~ msgstr "Bidali korrontea _gailu bati"
+
+#~ msgid "Stream to a Device"
+#~ msgstr "Bidali korrontea gailu bati"
+
+#~ msgid ""
+#~ "Audio playback can be streamed to a network device (requires Google Cast "
+#~ "support)."
+#~ msgstr ""
+#~ "Audio-erreprodukzioa sareko gailu batera bidali daiteke (Google Cast "
+#~ "euskarria behar du)."
+
+#~ msgid "Search again"
+#~ msgstr "Bilatu berriro"
+
+#~ msgid "Main View"
+#~ msgstr "Ikuspegi nagusia"
+
+#~ msgid "Unable to access music directory. Saving song in home directory."
+#~ msgstr ""
+#~ "Ezin da musika-direktorioan sartu. Abestia direktorio nagusian gordetzen."
+
+#~ msgid "Cannot save song."
+#~ msgstr "Ezin da abestia gorde."
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open library view"
+#~ msgstr "Ireki liburutegi-ikuspegia"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open discover view"
+#~ msgstr "Ireki aurkitze-ikuspegia"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open search view"
+#~ msgstr "Ireki bilaketa-ikuspegia"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Go back"
+#~ msgstr "Joan atzera"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Refresh station data"
+#~ msgstr "Freskatu estazioaren datuak"
+
+#~ msgid "Station details"
+#~ msgstr "Irrati-estazioaren xehetasunak"
+
+#~ msgid "Unable to connect to radio-browser.info"
+#~ msgstr "Ezin da radio-browser.info gunearekin konektatu"
+
+#~ msgid ""
+#~ "Access to the public online station database is not available. Ensure "
+#~ "that you are connected to the internet."
+#~ msgstr ""
+#~ "Irrati-estazioen lineako datu-base publikoa ez dago erabilgarri. Ziurtatu "
+#~ "internetekin konektatuta zaudela."
+
+#~ msgid "Appearance"
+#~ msgstr "Itxura"
+
+#~ msgid "_Dark Mode"
+#~ msgstr "Gai i_luna"
+
+#~ msgid "Whether the application should use a dark theme"
+#~ msgstr "Aplikazioak gai iluna erabiliko duen ala ez"
+
+#~ msgid "Open Application Menu"
+#~ msgstr "Ireki aplikazioaren menua"
 
 #~ msgid "_How does this work?"
 #~ msgstr "_Nola funtzionatzen du?"
 
-#~ msgid "Select station image"
-#~ msgstr "Hautatu estazioaren irudia"
-
-#~ msgid "Shortwave"
-#~ msgstr "Shortwave"
-
 #~ msgid "Error details"
 #~ msgstr "Errore-xehetasunak"
-
-#~ msgid "Connected with"
-#~ msgstr "Honekin konektatua:"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Utzi"
 
 #~ msgid "_Connect"
 #~ msgstr "K_onektatu"
@@ -605,18 +978,8 @@ msgstr "Gradio;Irratia;Korrontea;Wave;"
 #~ msgstr[0] "{} · Boto {}"
 #~ msgstr[1] "{} · {} boto"
 
-#~ msgctxt "shortcut window"
-#~ msgid "Search for stations"
-#~ msgstr "Bilatu estazioak"
-
-#~ msgid "Discover"
-#~ msgstr "Aurkitu"
-
 #~ msgid "Languages"
 #~ msgstr "Hizkuntzak"
-
-#~ msgid "Library"
-#~ msgstr "Liburutegia"
 
 #~ msgid "Import from Gradio"
 #~ msgstr "Inportatu Gradio aplikaziotik"

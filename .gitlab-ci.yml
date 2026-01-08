@@ -1,63 +1,62 @@
-stages:
-  - check
-  - build
+include:
+  - project: "GNOME/citemplates"
+    file: "flatpak/flatpak_ci_initiative.yml"
 
 variables:
+  BUNDLE: "de.haeckerfelix.Shortwave.Devel.flatpak"
   MANIFEST_PATH: "build-aux/de.haeckerfelix.Shortwave.Devel.json"
   FLATPAK_MODULE: "shortwave"
   APP_ID: "de.haeckerfelix.Shortwave.Devel"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-  CI_IMAGE_X86_64: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master"
+  RUNTIME_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master"
 
-.build_template:
-  script:
-    - rewrite-flatpak-manifest ${MANIFEST_PATH} ${FLATPAK_MODULE} ${CONFIG_OPTS}
-    - >
-      xvfb-run -a -s "-screen 0 1024x768x24"
-      flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
-    - flatpak build-bundle repo ${BUNDLE} --runtime-repo=${RUNTIME_REPO} ${APP_ID} ${BRANCH}
-    - mkdir logs
-    - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-logs/meson-log.txt logs/
-    - tar cf repo.tar repo/
-  artifacts:
-    name: 'Flatpak artifacts'
-    expose_as: 'Get Flatpak bundle here'
-    when: 'always'
-    paths:
-      - "${BUNDLE}"
-      - 'repo.tar'
-      - 'logs'
-    expire_in: 14 days
+# x86_64 Flatpak bundle
+flatpak@x86_64:
+  extends: ".flatpak@x86_64"
 
-.build_x86_64:
-  extends: .build_template
-  image: '${CI_IMAGE_X86_64}'
-  tags:
-    - flatpak
+# aarch64 Flatpak bundle
+flatpak@aarch64:
+  extends: ".flatpak@aarch64"
 
-# Configure and run code checks
-# Exits and fails if an error is encountered
-checks:
-  image: "rustlang/rust:nightly-slim"
-  stage: check
-  script:
-    - apt update && apt install --no-install-recommends perl perl-modules-5.28 make -y
-    - build-aux/checks.sh --verbose --force-install
+nightly@x86_64:
+  extends: ".publish_nightly"
+  needs: ["flatpak@x86_64"]
 
-# Lint the code
-cargo-clippy:
-  image: '${CI_IMAGE_X86_64}'
-  stage: check
+nightly@aarch64:
+  extends: ".publish_nightly"
+  needs: ["flatpak@aarch64"]
+
+.flatpak-command: &flatpak-command
+  image: '${RUNTIME_IMAGE}'
   tags:
     - flatpak
   script:
-    - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
-    - echo "cargo clippy -- -D warnings" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
+    - flatpak-builder --user --disable-rofiles-fuse --keep-build-dirs --stop-at=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
+    - flatpak build-finish --share=network flatpak_app
+    - echo "cd .. && ${COMMAND}" | flatpak-builder --user --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
 
-# Build the development version of the flatpak
-build-x86_64:
-  extends: .build_x86_64
-  stage: build
+cargo-fmt:
+  <<: *flatpak-command
   variables:
-    BUNDLE: "${FLATPAK_MODULE}_x86_64.flatpak"
-    CONFIG_OPTS: "-Dprofile=development"
+    COMMAND: "./build-aux/checks.sh cargo_fmt"
+
+cargo-typos:
+  <<: *flatpak-command
+  variables:
+    COMMAND: "cargo install typos-cli && ./build-aux/checks.sh cargo_typos"
+
+cargo-deny:
+  <<: *flatpak-command
+  variables:
+    COMMAND: "cargo install cargo-deny && ./build-aux/checks.sh cargo_deny"
+
+cargo-clippy:
+  <<: *flatpak-command
+  variables:
+    COMMAND: "./build-aux/checks.sh cargo_clippy"
+
+potfiles:
+  image: alpine
+  script:
+    - apk add --no-cache git
+    - ./build-aux/checks.sh potfiles

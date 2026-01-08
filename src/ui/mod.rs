@@ -1,5 +1,5 @@
 // Shortwave - mod.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2024  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,26 +15,35 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 pub mod pages;
+pub mod player;
 
-pub mod about_window;
-mod create_station_dialog;
-pub mod featured_carousel;
-mod song_listbox;
-mod song_row;
+pub mod about_dialog;
+mod add_station_dialog;
+mod device_dialog;
+mod device_indicator;
+mod device_row;
+mod display_error;
+mod preferences_dialog;
+mod recording_indicator;
+mod station_cover;
 mod station_dialog;
-mod station_favicon;
-mod station_flowbox;
 mod station_row;
-mod streaming_dialog;
+mod track_dialog;
+mod track_row;
+mod volume_control;
 mod window;
 
-pub use create_station_dialog::SwCreateStationDialog;
-pub use featured_carousel::SwFeaturedCarousel;
-pub use song_listbox::SongListBox;
-pub use song_row::SwSongRow;
+pub use add_station_dialog::SwAddStationDialog;
+pub use device_dialog::SwDeviceDialog;
+pub use device_indicator::SwDeviceIndicator;
+pub use device_row::SwDeviceRow;
+pub use display_error::{DisplayError, ToastWindow};
+pub use preferences_dialog::SwPreferencesDialog;
+pub use recording_indicator::SwRecordingIndicator;
+pub use station_cover::SwStationCover;
 pub use station_dialog::SwStationDialog;
-pub use station_favicon::{FaviconSize, StationFavicon};
-pub use station_flowbox::SwStationFlowBox;
 pub use station_row::SwStationRow;
-pub use streaming_dialog::SwStreamingDialog;
-pub use window::{SwApplicationWindow, SwView};
+pub use track_dialog::SwTrackDialog;
+pub use track_row::SwTrackRow;
+pub use volume_control::SwVolumeControl;
+pub use window::SwApplicationWindow;

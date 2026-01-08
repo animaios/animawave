@@ -20,11 +20,6 @@ use gtk::{gio, glib};
 use crate::config;
 use crate::settings::Key;
 
-pub fn create_action(key: Key) -> gio::Action {
-    let settings = settings();
-    settings.create_action(&key.to_string())
-}
-
 pub fn settings() -> gio::Settings {
     gio::Settings::new(config::APP_ID)
 }
@@ -35,6 +30,11 @@ pub fn bind_property<P: IsA<glib::Object>>(key: Key, object: &P, property: &str)
         .bind(key.to_string().as_str(), object, property)
         .flags(gio::SettingsBindFlags::DEFAULT)
         .build();
+}
+
+pub fn create_action(key: Key) -> gio::Action {
+    let settings = settings();
+    settings.create_action(key.to_string().as_str())
 }
 
 #[allow(dead_code)]

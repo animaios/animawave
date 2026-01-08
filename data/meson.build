@@ -45,12 +45,12 @@ appdata_file = i18n.merge_file(
 )
 
 # Validate Appdata
-appstream_util = find_program('appstream-util', required: false)
-if appstream_util.found()
+appstreamcli = find_program('appstreamcli', required: false)
+if appstreamcli.found()
   test(
-    'Validate appdata', appstream_util,
+    'Validate appdata file', appstreamcli,
     args: [
-      'validate', '--nonet', appdata_file.full_path()
+      'validate', '--no-net', '--explain', appdata_file.full_path()
     ]
   )
 endif
@@ -68,7 +68,7 @@ configure_file(
   install_dir: datadir / 'glib-2.0' / 'schemas'
 )
 
-# Validata GSchema
+# Validate GSchema
 glib_compile_schemas = find_program('glib-compile-schemas', required: false)
 if glib_compile_schemas.found()
   test(
@@ -94,6 +94,7 @@ configure_file(
 # Resources
 conf = configuration_data()
 conf.set('PATH_ID', path_id)
+conf.set('APP_ID', app_id)
 configure_file(
   input: '@0@.gresource.xml.in'.format(base_id),
   output: '@0@.gresource.xml'.format(app_id),
@@ -105,7 +106,8 @@ gnome.compile_resources(
   gresource_bundle: true,
   source_dir: join_paths(meson.project_build_root(), 'data'),
   install: true,
-  install_dir: join_paths(datadir, meson.project_name())
+  install_dir: join_paths(datadir, meson.project_name()),
+  dependencies: appdata_file,
 )
 
 # Run required post-install steps

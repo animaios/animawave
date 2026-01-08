@@ -1,5 +1,5 @@
 // Shortwave - app.rs
-// Copyright (C) 2021-2022  Felix Häcker <haeckerfelix@gnome.org>
+// Copyright (C) 2021-2025  Felix Häcker <haeckerfelix@gnome.org>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,52 +14,46 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::str::FromStr;
+use std::cell::{Cell, OnceCell, RefCell};
 
+use adw::prelude::*;
 use adw::subclass::prelude::*;
+use ashpd::desktop::background::BackgroundProxy;
 use gio::subclass::prelude::ApplicationImpl;
-use glib::{clone, ObjectExt, ParamSpec, ParamSpecObject, Receiver, Sender, ToValue};
-use gtk::glib::WeakRef;
-use gtk::prelude::*;
+use glib::{clone, Properties};
+use gtk::glib::VariantTy;
 use gtk::{gio, glib};
-use once_cell::sync::{Lazy, OnceCell};
 
-use crate::api::{Client, SwStation};
-use crate::audio::{GCastDevice, PlaybackState, Player, Song};
+use crate::api::client;
+use crate::api::CoverLoader;
+use crate::audio::{SwPlaybackState, SwPlayer, SwRecordingState, SwTrack};
 use crate::config;
 use crate::database::SwLibrary;
-use crate::model::SwSorting;
-use crate::settings::{settings_manager, Key, SettingsWindow};
-use crate::ui::{about_window, SwApplicationWindow, SwView};
-
-#[derive(Debug, Clone)]
-pub enum Action {
-    // Audio Playback
-    PlaybackConnectGCastDevice(GCastDevice),
-    PlaybackDisconnectGCastDevice,
-    PlaybackSetStation(Box<SwStation>),
-    PlaybackSet(bool),
-    PlaybackToggle,
-    PlaybackSetVolume(f64),
-    PlaybackSaveSong(Song),
-
-    SettingsKeyChanged(Key),
-}
+use crate::i18n::{i18n, i18n_f};
+use crate::settings::*;
+use crate::ui::{SwApplicationWindow, SwTrackDialog};
 
 mod imp {
+    use crate::utils;
+
     use super::*;
 
+    #[derive(Default, Properties)]
+    #[properties(wrapper_type = super::SwApplication)]
     pub struct SwApplication {
-        pub sender: Sender<Action>,
-        pub receiver: RefCell<Option<Receiver<Action>>>,
+        #[property(get)]
+        library: SwLibrary,
+        #[property(get)]
+        player: SwPlayer,
+        #[property(get)]
+        rb_server: RefCell<Option<String>>,
+        #[property(get, set=Self::set_background_playback)]
+        background_playback: Cell<bool>,
 
-        pub window: OnceCell<WeakRef<SwApplicationWindow>>,
-        pub player: Rc<Player>,
-        pub library: SwLibrary,
-
-        pub settings: gio::Settings,
+        pub cover_loader: CoverLoader,
+        pub inhibit_cookie: Cell<u32>,
+        pub background_hold: RefCell<Option<gio::ApplicationHoldGuard>>,
+        pub background_proxy: OnceCell<BackgroundProxy<'static>>,
     }
 
     #[glib::object_subclass]
@@ -67,118 +61,248 @@ mod imp {
         const NAME: &'static str = "SwApplication";
         type ParentType = adw::Application;
         type Type = super::SwApplication;
-
-        fn new() -> Self {
-            let (sender, r) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-            let receiver = RefCell::new(Some(r));
-
-            let window = OnceCell::new();
-            let player = Player::new(sender.clone());
-            let library = SwLibrary::new(sender.clone());
-
-            let settings = settings_manager::settings();
-
-            Self {
-                sender,
-                receiver,
-                window,
-                player,
-                library,
-                settings,
-            }
-        }
     }
 
-    // Implement GLib.Object for SwApplication
+    #[glib::derived_properties]
     impl ObjectImpl for SwApplication {
-        fn properties() -> &'static [ParamSpec] {
-            static PROPERTIES: Lazy<Vec<ParamSpec>> = Lazy::new(|| {
-                vec![ParamSpecObject::new(
-                    "library",
-                    "",
-                    "",
-                    SwLibrary::static_type(),
-                    glib::ParamFlags::READABLE,
-                )]
-            });
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
-            PROPERTIES.as_ref()
+            obj.add_action_entries([
+                // app.show-track
+                gio::ActionEntry::builder("show-track")
+                    .parameter_type(Some(VariantTy::STRING))
+                    .activate(move |app: &super::SwApplication, _, uuid| {
+                        app.activate();
+
+                        let uuid = uuid.and_then(|v| v.str()).unwrap_or_default();
+                        let window = app.application_window();
+
+                        if let Some(track) = app.player().track_by_uuid(uuid) {
+                            app.show_track_dialog(&track);
+                        } else {
+                            window.show_notification(&i18n("Track no longer available"));
+                        }
+                    })
+                    .build(),
+                // app.save-track
+                gio::ActionEntry::builder("save-track")
+                    .parameter_type(Some(VariantTy::STRING))
+                    .activate(move |app: &super::SwApplication, _, uuid| {
+                        app.activate();
+
+                        let uuid = uuid.and_then(|v| v.str()).unwrap_or_default();
+                        let window = app.application_window();
+
+                        // Check if track uuid matches current playing track uuid
+                        if let Some(track) = app.player().playing_track() {
+                            if track.uuid() == uuid && track.state() == SwRecordingState::Recording
+                            {
+                                track.set_save_when_recorded(true);
+                                app.show_track_dialog(&track);
+                                return;
+                            }
+                        }
+
+                        window
+                            .show_notification(&i18n("This track is currently not being recorded"));
+                    })
+                    .build(),
+                // app.cancel-recording
+                gio::ActionEntry::builder("cancel-recording")
+                    .parameter_type(Some(VariantTy::STRING))
+                    .activate(move |app: &super::SwApplication, _, uuid| {
+                        app.activate();
+
+                        let window: SwApplicationWindow = app.application_window();
+                        let uuid = uuid.and_then(|v| v.str()).unwrap_or_default();
+
+                        // Check if track uuid matches current playing track uuid
+                        if let Some(track) = app.player().playing_track() {
+                            if track.uuid() == uuid && track.state() == SwRecordingState::Recording
+                            {
+                                app.player().cancel_recording();
+                                app.show_track_dialog(&track);
+                                return;
+                            }
+                        }
+
+                        window
+                            .show_notification(&i18n("This track is currently not being recorded"));
+                    })
+                    .build(),
+                // app.quit
+                gio::ActionEntry::builder("quit")
+                    .activate(move |app: &super::SwApplication, _, _| {
+                        app.quit();
+                    })
+                    .build(),
+            ]);
+
+            obj.set_accels_for_action("win.show-preferences", &["<primary>comma"]);
+            obj.set_accels_for_action("app.quit", &["<primary>q"]);
+            obj.set_accels_for_action("window.close", &["<primary>w"]);
+            obj.set_accels_for_action("player.toggle-playback", &["<primary>space"]);
+        }
+    }
+
+    impl ApplicationImpl for SwApplication {
+        fn startup(&self) {
+            self.parent_startup();
+
+            let fut = clone!(
+                #[weak(rename_to = imp)]
+                self,
+                async move {
+                    // Find radiobrowser server and update library data
+                    imp.lookup_rb_server().await;
+
+                    // Setup background portal proxy
+                    imp.setup_background_portal_proxy().await;
+                }
+            );
+            glib::spawn_future_local(fut);
+
+            // Restore previously played station / volume
+            self.player.restore_state();
+
+            settings_manager::bind_property(
+                Key::BackgroundPlayback,
+                &*self.obj(),
+                "background-playback",
+            );
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "library" => obj.library().to_value(),
-                _ => unimplemented!(),
+        fn activate(&self) {
+            self.parent_activate();
+
+            debug!("gio::Application -> activate()");
+            self.obj().application_window().present();
+        }
+
+        fn shutdown(&self) {
+            self.parent_shutdown();
+            debug!("gio::Application -> shutdown()");
+
+            super::SwApplication::default().cover_loader().prune_cache();
+        }
+    }
+
+    impl GtkApplicationImpl for SwApplication {
+        fn window_removed(&self, window: &gtk::Window) {
+            self.parent_window_removed(window);
+            let obj = self.obj();
+
+            if obj.active_window().is_none() && obj.player().state() != SwPlaybackState::Playing {
+                debug!("All windows closed, no active playback -> quit application, no need to run in background.");
+                obj.quit();
             }
         }
     }
 
-    // Implement Gio.Application for SwApplication
-    impl ApplicationImpl for SwApplication {
-        fn activate(&self, app: &Self::Type) {
-            debug!("gio::Application -> activate()");
-            let app = app.downcast_ref::<super::SwApplication>().unwrap();
+    impl AdwApplicationImpl for SwApplication {}
 
-            // If the window already exists,
-            // present it instead creating a new one again.
-            if let Some(weak_window) = self.window.get() {
-                weak_window.upgrade().unwrap().present();
-                info!("Application window presented.");
+    impl SwApplication {
+        fn set_background_playback(&self, enabled: bool) {
+            debug!("Enable background playback: {}", enabled);
+            self.background_playback.set(enabled);
+
+            if enabled {
+                self.background_hold.replace(Some(self.obj().hold()));
+            } else {
+                self.background_hold.replace(None);
+            }
+        }
+
+        async fn setup_background_portal_proxy(&self) {
+            if !ashpd::is_sandboxed().await {
+                debug!("Not sandboxed, not setting up background portal proxy.");
                 return;
             }
 
-            // No window available -> we have to create one
-            let window = app.create_window();
-            let _ = self.window.set(window.downgrade());
-            info!("Created application window.");
+            match ashpd::desktop::background::BackgroundProxy::new().await {
+                Ok(proxy) => {
+                    let _ = self.background_proxy.set(proxy);
 
-            // Setup app level GActions
-            app.setup_gactions();
+                    self.obj().player().connect_state_notify(clone!(
+                        #[weak(rename_to = imp)]
+                        self,
+                        move |_| {
+                            imp.update_background_portal_status();
+                        }
+                    ));
 
-            // Setup action channel
-            let receiver = self.receiver.borrow_mut().take().unwrap();
-            receiver.attach(
-                None,
-                clone!(@strong app => move |action| app.process_action(action)),
+                    self.obj().player().connect_station_notify(clone!(
+                        #[weak(rename_to = imp)]
+                        self,
+                        move |_| {
+                            imp.update_background_portal_status();
+                        }
+                    ));
+
+                    self.update_background_portal_status();
+                }
+                Err(err) => warn!("Unable to setup background portal proxy: {}", err),
+            };
+        }
+
+        fn update_background_portal_status(&self) {
+            let mut message = i18n("No Playback");
+
+            if let Some(station) = self.obj().player().station() {
+                if self.obj().player().state() == SwPlaybackState::Playing {
+                    message = i18n_f("Playing “{}”", &[&station.title()]);
+                }
+            }
+
+            let fut = clone!(
+                #[weak(rename_to = imp)]
+                self,
+                #[strong]
+                message,
+                async move {
+                    imp.set_background_portal_status(&message).await;
+                }
             );
+            glib::spawn_future_local(fut);
+        }
 
-            // Retrieve station data
-            app.refresh_data();
+        async fn set_background_portal_status(&self, message: &str) {
+            let message = utils::ellipsize_end(message, 96);
+            if let Some(proxy) = self.background_proxy.get() {
+                if let Err(err) = proxy.set_status(&message).await {
+                    warn!("Unable to update background portal status message: {}", err);
+                }
+            }
+        }
 
-            // Setup settings signal (we get notified when a key gets changed)
-            self.settings.connect_changed(
-                None,
-                clone!(@strong self.sender as sender => move |_, key_str| {
-                    let key: Key = Key::from_str(key_str).unwrap();
-                    send!(sender, Action::SettingsKeyChanged(key));
-                }),
-            );
+        async fn lookup_rb_server(&self) {
+            // Try to find a working radio-browser server
+            let rb_server = client::lookup_rb_server().await;
 
-            // Needs to be called after settings.connect_changed for it to trigger.
-            app.update_color_scheme();
+            self.rb_server.borrow_mut().clone_from(&rb_server);
+            self.obj().notify("rb-server");
 
-            // Small workaround to update every view to the correct sorting/order.
-            send!(self.sender, Action::SettingsKeyChanged(Key::ViewSorting));
+            if let Some(rb_server) = &rb_server {
+                info!("Using radio-browser.info REST api: {rb_server}");
+                // Refresh library data
+                let _ = self.library.update_data().await;
+            } else {
+                warn!("Unable to find radio-browser.info server.");
+            }
         }
     }
-
-    // Implement Gtk.Application for SwApplication
-    impl GtkApplicationImpl for SwApplication {}
-
-    // Implement Adw.Application for SwApplication
-    impl AdwApplicationImpl for SwApplication {}
 }
 
-// Wrap SwApplication into a usable gtk-rs object
 glib::wrapper! {
     pub struct SwApplication(ObjectSubclass<imp::SwApplication>)
         @extends gio::Application, gtk::Application, adw::Application,
         @implements gio::ActionMap, gio::ActionGroup;
 }
 
-// SwApplication implementation itself
 impl SwApplication {
-    pub fn run() {
+    pub fn run() -> glib::ExitCode {
         debug!(
             "{} ({}) ({}) - Version {} ({})",
             config::NAME,
@@ -187,147 +311,65 @@ impl SwApplication {
             config::VERSION,
             config::PROFILE
         );
-        info!("Isahc version: {}", isahc::version());
 
         // Create new GObject and downcast it into SwApplication
-        let app = glib::Object::new::<SwApplication>(&[
-            ("application-id", &Some(config::APP_ID)),
-            ("flags", &gio::ApplicationFlags::empty()),
-            ("resource-base-path", &Some(config::PATH_ID)),
-        ])
-        .unwrap();
+        let app = glib::Object::builder::<SwApplication>()
+            .property("application-id", Some(config::APP_ID))
+            .property("flags", gio::ApplicationFlags::empty())
+            .property("resource-base-path", Some(config::PATH_ID))
+            .build();
 
         // Start running gtk::Application
-        app.run();
+        app.run()
     }
 
-    fn create_window(&self) -> SwApplicationWindow {
+    pub fn application_window(&self) -> SwApplicationWindow {
+        if let Some(window) = self.active_window() {
+            window.downcast::<SwApplicationWindow>().unwrap()
+        } else {
+            let window = SwApplicationWindow::new();
+            self.add_window(&window);
+
+            info!("Created application window.");
+            window
+        }
+    }
+
+    pub fn cover_loader(&self) -> CoverLoader {
+        self.imp().cover_loader.clone()
+    }
+
+    pub fn set_inhibit(&self, inhibit: bool) {
         let imp = self.imp();
-        let window = SwApplicationWindow::new(imp.sender.clone(), self.clone(), imp.player.clone());
 
-        // Set initial view
-        window.set_view(SwView::Library);
+        if inhibit && imp.inhibit_cookie.get() == 0 {
+            debug!("Install inhibitor");
 
-        window.present();
-        window
-    }
+            let cookie = self.inhibit(
+                Some(&self.application_window()),
+                gtk::ApplicationInhibitFlags::SUSPEND,
+                Some(&i18n("Active Playback")),
+            );
+            imp.inhibit_cookie.set(cookie);
+        } else if imp.inhibit_cookie.get() != 0 {
+            debug!("Remove inhibitor");
 
-    fn setup_gactions(&self) {
-        let window = SwApplicationWindow::default();
-
-        // app.show-preferences
-        action!(
-            self,
-            "show-preferences",
-            clone!(@weak window => move |_, _| {
-                let settings_window = SettingsWindow::new(&window.upcast());
-                settings_window.show();
-            })
-        );
-        self.set_accels_for_action("app.show-preferences", &["<primary>comma"]);
-
-        // app.quit
-        action!(
-            self,
-            "quit",
-            clone!(@weak window => move |_, _| {
-                window.close();
-            })
-        );
-        self.set_accels_for_action("app.quit", &["<primary>q"]);
-
-        // app.about
-        action!(
-            self,
-            "about",
-            clone!(@weak window => move |_, _| {
-                about_window::show(&window);
-            })
-        );
-
-        self.set_accels_for_action("window.close", &["<primary>w"]);
-    }
-
-    pub fn library(&self) -> SwLibrary {
-        self.imp().library.clone()
-    }
-
-    fn process_action(&self, action: Action) -> glib::Continue {
-        let imp = self.imp();
-        if self.active_window().is_none() {
-            return glib::Continue(true);
-        }
-
-        let window = SwApplicationWindow::default();
-
-        match action {
-            Action::PlaybackConnectGCastDevice(device) => {
-                imp.player.connect_to_gcast_device(device)
-            }
-            Action::PlaybackDisconnectGCastDevice => imp.player.disconnect_from_gcast_device(),
-            Action::PlaybackSetStation(station) => {
-                imp.player.set_station(*station);
-                window.show_player_widget();
-            }
-            Action::PlaybackSet(true) => imp.player.set_playback(PlaybackState::Playing),
-            Action::PlaybackSet(false) => imp.player.set_playback(PlaybackState::Stopped),
-            Action::PlaybackToggle => imp.player.toggle_playback(),
-            Action::PlaybackSetVolume(volume) => imp.player.set_volume(volume),
-            Action::PlaybackSaveSong(song) => imp.player.save_song(song),
-            Action::SettingsKeyChanged(key) => self.apply_settings_changes(key),
-        }
-        glib::Continue(true)
-    }
-
-    fn apply_settings_changes(&self, key: Key) {
-        debug!("Settings key changed: {:?}", &key);
-        match key {
-            Key::ViewSorting | Key::ViewOrder => {
-                let value = settings_manager::string(Key::ViewSorting);
-                let sorting = SwSorting::from_str(&value).unwrap();
-                let order = settings_manager::string(Key::ViewOrder);
-                let descending = order == "Descending";
-
-                self.imp()
-                    .window
-                    .get()
-                    .unwrap()
-                    .upgrade()
-                    .unwrap()
-                    .set_sorting(sorting, descending);
-            }
-            Key::DarkMode => self.update_color_scheme(),
-            _ => (),
+            self.uninhibit(imp.inhibit_cookie.get());
+            imp.inhibit_cookie.set(0);
         }
     }
 
-    fn update_color_scheme(&self) {
-        let manager = adw::StyleManager::default();
-        if !manager.system_supports_color_schemes() {
-            let color_scheme = if settings_manager::boolean(Key::DarkMode) {
-                adw::ColorScheme::PreferDark
-            } else {
-                adw::ColorScheme::PreferLight
-            };
-            manager.set_color_scheme(color_scheme);
-        }
-    }
+    pub fn show_track_dialog(&self, track: &SwTrack) {
+        let win = self.application_window();
 
-    pub fn refresh_data(&self) {
-        let fut = clone!(@weak self as this => async move {
-            let imp = this.imp();
-            let window = SwApplicationWindow::default();
-
-            if let Some(server) = Client::api_server().await{
-                imp.library.refresh_data(Some(&server));
-                window.refresh_data(&server);
-                window.enable_offline_mode(false);
-            }else{
-                imp.library.refresh_data(None);
-                window.enable_offline_mode(true);
+        // Avoid having multiple track dialogs opened
+        if let Some(dialog) = win.visible_dialog() {
+            if let Ok(track_dialog) = dialog.downcast::<SwTrackDialog>() {
+                track_dialog.close();
             }
-        });
-        spawn!(fut);
+        }
+
+        SwTrackDialog::new(track).present(Some(&win));
     }
 }
 
