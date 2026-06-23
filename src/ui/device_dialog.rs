@@ -30,7 +30,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/device_dialog.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/device_dialog.ui")]
     #[properties(wrapper_type = super::SwDeviceDialog)]
     pub struct SwDeviceDialog {
         #[template_child]

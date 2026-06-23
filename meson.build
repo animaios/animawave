@@ -1,4 +1,4 @@
-project('shortwave', 'rust',
+project('animawave', 'rust',
           version: '5.0.0',
     meson_version: '>= 0.59.0',
           license: 'GPL-3.0-or-later',
@@ -30,9 +30,9 @@ dependency('gstreamer-plugins-bad-1.0', version: '>= 1.16')
 dependency('gstreamer-bad-audio-1.0', version: '>= 1.16')
 
 # Initialize project variables
-name       = 'Shortwave'
-base_id    = 'de.haeckerfelix.Shortwave'
-path_id    = '/de/haeckerfelix/Shortwave'
+name       = 'Animawave'
+base_id    = 'de.haeckerfelix.Animawave'
+path_id    = '/de/haeckerfelix/Animawave'
 app_id     = base_id
 vcs_tag    = run_command('git', 'rev-parse', '--short', 'HEAD', check: false).stdout().strip()
 profile    = get_option('profile')

@@ -28,7 +28,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/recording_indicator.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/recording_indicator.ui")]
     #[properties(wrapper_type = super::SwRecordingIndicator)]
     pub struct SwRecordingIndicator {
         #[template_child]

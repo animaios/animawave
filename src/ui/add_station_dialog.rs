@@ -30,7 +30,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/add_station_dialog.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/add_station_dialog.ui")]
     #[properties(wrapper_type = super::SwAddStationDialog)]
     pub struct SwAddStationDialog {
         #[template_child]

@@ -32,7 +32,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/device_row.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/device_row.ui")]
     #[properties(wrapper_type = super::SwDeviceRow)]
     pub struct SwDeviceRow {
         #[template_child]

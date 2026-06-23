@@ -10,7 +10,7 @@
   <summary>Listen to internet radio</summary>
   <description>
     <p>
-      Shortwave is an internet radio player that provides access to a station database with over 50,000 stations.
+      Animawave is an internet radio player that provides access to a station database with over 50,000 stations.
     </p>
     <p>Features:</p>
     <ul>
@@ -39,13 +39,13 @@
   <project_license>GPL-3.0-or-later</project_license>
 
   <!-- URLs -->
-  <url type="homepage">https://apps.gnome.org/Shortwave/</url>
-  <url type="bugtracker">https://gitlab.gnome.org/World/Shortwave/issues</url>
+  <url type="homepage">https://apps.gnome.org/Animawave/</url>
+  <url type="bugtracker">https://gitlab.gnome.org/World/Animawave/issues</url>
   <url type="donation">https://liberapay.com/haecker-felix</url>
-  <url type="translate">https://l10n.gnome.org/module/Shortwave/</url>
-  <url type="contact">https://matrix.to/#/#shortwave:gnome.org</url>
-  <url type="vcs-browser">https://gitlab.gnome.org/World/Shortwave</url>
-  <url type="contribute">https://welcome.gnome.org/app/Shortwave/</url>
+  <url type="translate">https://l10n.gnome.org/module/Animawave/</url>
+  <url type="contact">https://matrix.to/#/#animawave:gnome.org</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/World/Animawave</url>
+  <url type="contribute">https://welcome.gnome.org/app/Animawave/</url>
 
   <!-- Supported Hardware -->
   <requires>
@@ -60,15 +60,15 @@
   <!-- Screenshots -->
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/World/Shortwave/raw/main/data/screenshots/1.png</image>
+      <image>https://gitlab.gnome.org/World/Animawave/raw/main/data/screenshots/1.png</image>
       <caption>Create your own library where you can add your favorite stations</caption>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/Shortwave/raw/main/data/screenshots/2.png</image>
+      <image>https://gitlab.gnome.org/World/Animawave/raw/main/data/screenshots/2.png</image>
       <caption>Easily search and discover new radio stations</caption>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/Shortwave/raw/main/data/screenshots/3.png</image>
+      <image>https://gitlab.gnome.org/World/Animawave/raw/main/data/screenshots/3.png</image>
       <caption>Responsive application layout, compatible for small and large screens</caption>
     </screenshot>
   </screenshots>
@@ -78,7 +78,7 @@
     <release version="5.0.0" date="2025-02-05">
       <description>
         <p>
-          Shortwave now supports background playback, allowing the playback to continue when you close the window. If desired, the old behaviour can be restored in the preferences.
+          Animawave now supports background playback, allowing the playback to continue when you close the window. If desired, the old behaviour can be restored in the preferences.
         </p>
         <p>
           The recording feature has also been completely overhauled. You can now choose from three different modes:
@@ -168,7 +168,7 @@
           Chromecast
         </p>
         <ul>
-          <li>Shortwave is now a registered Google Cast app, no longer relying on the generic media player</li>
+          <li>Animawave is now a registered Google Cast app, no longer relying on the generic media player</li>
           <li>New backend which greatly improves communication stability with cast devices</li>
           <li>Improved discovery of cast devices with lower CPU and memory usage</li>
           <li>Now possible to change the volume of a connected cast device</li>
@@ -215,7 +215,7 @@
           <li>New button on the search page that allows to sort the search results.</li>
           <li>Overhauled station dialog, with more clearly displayed information.</li>
           <li>Update desktop notification on song change instead of generating a new separate notification for each song.</li>
-          <li>Shortwave can now be used normally, even if radio-browser.info is offline / unavailable.</li>
+          <li>Animawave can now be used normally, even if radio-browser.info is offline / unavailable.</li>
         </ul>
         <p>
           Besides these improvements, this version also includes many changes

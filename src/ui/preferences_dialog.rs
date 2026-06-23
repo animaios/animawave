@@ -26,7 +26,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/preferences_dialog.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/preferences_dialog.ui")]
     pub struct SwPreferencesDialog {
         // Playback
         #[template_child]

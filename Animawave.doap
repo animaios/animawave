@@ -5,14 +5,14 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
          
-  <name xml:lang="en">Shortwave</name>
+  <name xml:lang="en">Animawave</name>
   <shortdesc xml:lang="en">
     Radio app for GNOME
   </shortdesc>
   <description xml:lang="en">
       Listen to internet radio
   </description>
-  <bug-database rdf:resource="https://gitlab.gnome.org/World/Shortwave/issues" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/World/Animawave/issues" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#apps" />
   <programming-language>Rust</programming-language>
   
