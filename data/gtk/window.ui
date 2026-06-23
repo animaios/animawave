@@ -3,7 +3,7 @@
   <template class="SwApplicationWindow" parent="AdwApplicationWindow">
     <property name="width_request">360</property>
     <property name="height_request">100</property>
-    <property name="title">Animawave</property>
+    <property name="title">AnimaWave</property>
     <child>
       <object class="AdwBreakpoint" id="narrow_breakpoint">
         <condition>max-width: 625px</condition>

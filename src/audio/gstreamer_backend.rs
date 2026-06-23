@@ -84,7 +84,7 @@ impl GstreamerBackend {
             "pulsesink"
         } else {
             // If not, use autoaudiosink as fallback
-            warn!("Cannot find PulseAudio. Animawave will only work with limited functions.");
+            warn!("Cannot find PulseAudio. AnimaWave will only work with limited functions.");
             "autoaudiosink"
         };
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="SwLibraryPage" parent="AdwNavigationPage">
-    <property name="title" translatable="yes">Animawave</property>
+    <property name="title" translatable="yes">AnimaWave</property>
     <property name="tag">library</property>
     <property name="child">
       <object class="AdwToolbarView">
@@ -171,7 +171,7 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Animawave</attribute>
+        <attribute name="label" translatable="yes">_About AnimaWave</attribute>
         <attribute name="action">win.about</attribute>
       </item>
       <item>
