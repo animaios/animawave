@@ -62,6 +62,8 @@ mod imp {
         state: Cell<SwPlaybackState>,
         #[property(get)]
         last_failure: RefCell<String>,
+        pub playback_requested: Cell<bool>,
+        pub reconnect_source: RefCell<Option<glib::SourceId>>,
         #[property(get)]
         #[property(name="has-playing-track", get=Self::has_playing_track, type=bool)]
         playing_track: RefCell<Option<SwTrack>>,
@@ -315,6 +317,10 @@ mod imp {
 
             // Inhibit session suspend when playback is active
             SwApplication::default().set_inhibit(state == &SwPlaybackState::Playing);
+
+            if state == &SwPlaybackState::Failure {
+                self.reconnect_after_failure();
+            }
         }
 
         fn gst_volume_change(&self, volume: f64) {
@@ -337,6 +343,37 @@ mod imp {
         fn gst_failure(&self, failure: &str) {
             *self.last_failure.borrow_mut() = failure.to_string();
             self.obj().notify_last_failure();
+        }
+
+        fn reconnect_after_failure(&self) {
+            if !self.playback_requested.get()
+                || self.obj().station().is_none()
+                || self.reconnect_source.borrow().is_some()
+            {
+                return;
+            }
+
+            let source_id = glib::timeout_add_local_once(
+                std::time::Duration::from_secs(5),
+                clone!(
+                    #[weak(rename_to = imp)]
+                    self,
+                    move || {
+                        imp.reconnect_source.borrow_mut().take();
+
+                        if !imp.playback_requested.get() || imp.obj().station().is_none() {
+                            return;
+                        }
+
+                        debug!("Reconnecting stream after playback failure.");
+                        let mut backend = imp.backend.get().unwrap().borrow_mut();
+                        backend.set_state(gstreamer::State::Null);
+                        backend.set_state(gstreamer::State::Playing);
+                    }
+                ),
+            );
+
+            *self.reconnect_source.borrow_mut() = Some(source_id);
         }
 
         /// Unsets the current playing track and adds it to the past played tracks history
@@ -522,6 +559,10 @@ impl SwPlayer {
             return;
         }
 
+        self.imp().playback_requested.set(true);
+        if let Some(source_id) = self.imp().reconnect_source.borrow_mut().take() {
+            source_id.remove();
+        }
         self.imp()
             .backend
             .get()
@@ -537,6 +578,11 @@ impl SwPlayer {
 
     pub async fn stop_playback(&self) {
         let imp = self.imp();
+
+        imp.playback_requested.set(false);
+        if let Some(source_id) = imp.reconnect_source.borrow_mut().take() {
+            source_id.remove();
+        }
 
         // Discard recorded data when the stream stops
         imp.stop_recording(imp::RecordingStopReason::StoppedPlayback);
