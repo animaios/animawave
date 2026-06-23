@@ -115,7 +115,7 @@
                 <property name="hexpand">True</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">SHORTWAVE INTERNET RADIO</property>
+                    <property name="label" translatable="yes">ANIMAWAVE INTERNET RADIO</property>
                     <attributes>
                       <attribute name="font-desc" value="Cantarell Bold 9" />
                       <attribute name="style" value="italic" />
