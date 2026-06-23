@@ -1,9 +1,7 @@
-# Animawave
+<div align=center>
+<img width="777" height="777" alt="animawave banner" src="https://github.com/user-attachments/assets/97bed73e-c6b4-4d14-af60-c097408237ea" />
 
-![screenshot](data/screenshots/1.png)
-![screenshot](data/screenshots/4.png)
-
-Animawave is an internet radio player that provides access to a station database with over 50,000 stations.
+<h3>Animawave is an internet radio player that provides access to a station database with over 50,000 stations carefully selected for you by AI </h3>
 
 ## Getting in Touch
 If you have any questions regarding the use or development of Animawave,
