@@ -52,6 +52,51 @@ dependencies = [
 ]
 
 [[package]]
+name = "animawave"
+version = "0.0.0"
+dependencies = [
+ "Inflector",
+ "anyhow",
+ "ashpd",
+ "async-channel 2.3.1",
+ "async-compat",
+ "async-io",
+ "async-std-resolver",
+ "cacache",
+ "cast-sender",
+ "diesel",
+ "diesel_migrations",
+ "futures-util",
+ "gettext-rs",
+ "glycin",
+ "gstreamer",
+ "gstreamer-audio",
+ "gtk4",
+ "indexmap 2.9.0",
+ "language-tags",
+ "libadwaita",
+ "libshumate",
+ "log",
+ "mdns-sd",
+ "mpris-server",
+ "pretty_env_logger",
+ "rand 0.8.5",
+ "regex",
+ "reqwest",
+ "sanitize-filename",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serde_urlencoded",
+ "strum",
+ "strum_macros",
+ "sys-locale",
+ "thiserror 1.0.69",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3385,51 +3430,6 @@ name = "shlex"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
-
-[[package]]
-name = "shortwave"
-version = "0.0.0"
-dependencies = [
- "Inflector",
- "anyhow",
- "ashpd",
- "async-channel 2.3.1",
- "async-compat",
- "async-io",
- "async-std-resolver",
- "cacache",
- "cast-sender",
- "diesel",
- "diesel_migrations",
- "futures-util",
- "gettext-rs",
- "glycin",
- "gstreamer",
- "gstreamer-audio",
- "gtk4",
- "indexmap 2.9.0",
- "language-tags",
- "libadwaita",
- "libshumate",
- "log",
- "mdns-sd",
- "mpris-server",
- "pretty_env_logger",
- "rand 0.8.5",
- "regex",
- "reqwest",
- "sanitize-filename",
- "serde",
- "serde_derive",
- "serde_json",
- "serde_urlencoded",
- "strum",
- "strum_macros",
- "sys-locale",
- "thiserror 1.0.69",
- "url",
- "uuid",
-]
 
 [[package]]
 name = "signal-hook-registry"

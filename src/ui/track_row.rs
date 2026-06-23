@@ -32,7 +32,7 @@ mod imp {
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
     #[properties(wrapper_type = super::SwTrackRow)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/track_row.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/track_row.ui")]
     pub struct SwTrackRow {
         #[template_child]
         pub save_button: TemplateChild<gtk::Button>,

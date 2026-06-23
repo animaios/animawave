@@ -1,5 +1,5 @@
 {
-    "id": "de.haeckerfelix.Shortwave.Devel",
+    "id": "de.haeckerfelix.Animawave.Devel",
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
@@ -7,7 +7,7 @@
         "org.freedesktop.Sdk.Extension.rust-stable",
         "org.freedesktop.Sdk.Extension.llvm18"
     ],
-    "command": "shortwave",
+    "command": "animawave",
     "tags": [
         "nightly"
     ],
@@ -21,7 +21,7 @@
         "--talk-name=org.gtk.vfs.*",
         "--filesystem=xdg-run/gvfsd",
         "--filesystem=xdg-music",
-        "--env=RUST_LOG=shortwave=debug,cast_sender=debug",
+        "--env=RUST_LOG=animawave=debug,cast_sender=debug",
         "--env=RUST_BACKTRACE=1"
     ],
     "build-options": {
@@ -69,7 +69,7 @@
             ]
         },
         {
-            "name": "shortwave",
+            "name": "animawave",
             "buildsystem": "meson",
             "run-tests": true,
             "config-opts": [

@@ -36,7 +36,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/window.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/window.ui")]
     pub struct SwApplicationWindow {
         #[template_child]
         library_page: TemplateChild<SwLibraryPage>,

@@ -32,7 +32,7 @@ mod imp {
     static MAX_COVER_SIZE: i32 = 256;
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/station_cover.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/station_cover.ui")]
     #[properties(wrapper_type = super::SwStationCover)]
     pub struct SwStationCover {
         #[template_child]

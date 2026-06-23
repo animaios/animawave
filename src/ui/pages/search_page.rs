@@ -29,7 +29,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, Debug, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/search_page.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/search_page.ui")]
     pub struct SwSearchPage {
         #[template_child]
         search_entry: TemplateChild<gtk::SearchEntry>,

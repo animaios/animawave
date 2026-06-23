@@ -33,7 +33,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/player_view.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/player_view.ui")]
     #[properties(wrapper_type = super::SwPlayerView)]
     pub struct SwPlayerView {
         #[template_child]

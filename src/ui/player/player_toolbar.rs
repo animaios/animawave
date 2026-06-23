@@ -29,7 +29,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/player_toolbar.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/player_toolbar.ui")]
     #[properties(wrapper_type = super::SwPlayerToolbar)]
     pub struct SwPlayerToolbar {
         #[template_child]

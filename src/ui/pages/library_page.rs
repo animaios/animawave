@@ -33,7 +33,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, Debug, Properties, CompositeTemplate)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/library_page.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/library_page.ui")]
     #[properties(wrapper_type = super::SwLibraryPage)]
     pub struct SwLibraryPage {
         #[template_child]

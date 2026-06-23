@@ -3,10 +3,10 @@ include:
     file: "flatpak/flatpak_ci_initiative.yml"
 
 variables:
-  BUNDLE: "de.haeckerfelix.Shortwave.Devel.flatpak"
-  MANIFEST_PATH: "build-aux/de.haeckerfelix.Shortwave.Devel.json"
-  FLATPAK_MODULE: "shortwave"
-  APP_ID: "de.haeckerfelix.Shortwave.Devel"
+  BUNDLE: "de.haeckerfelix.Animawave.Devel.flatpak"
+  MANIFEST_PATH: "build-aux/de.haeckerfelix.Animawave.Devel.json"
+  FLATPAK_MODULE: "animawave"
+  APP_ID: "de.haeckerfelix.Animawave.Devel"
   RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
   RUNTIME_IMAGE: "quay.io/gnome_infrastructure/gnome-runtime-images:gnome-master"
 

@@ -29,7 +29,7 @@ mod imp {
     use super::*;
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
-    #[template(resource = "/de/haeckerfelix/Shortwave/gtk/volume_control.ui")]
+    #[template(resource = "/de/haeckerfelix/Animawave/gtk/volume_control.ui")]
     #[properties(wrapper_type = super::SwVolumeControl)]
     pub struct SwVolumeControl {
         #[template_child]
