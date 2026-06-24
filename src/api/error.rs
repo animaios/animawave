@@ -39,4 +39,10 @@ pub enum Error {
 
     #[error("No connectivity with radiobrowser server")]
     NoServerAvailable,
+
+    #[error("Request failed after all retry attempts: {0}")]
+    RetryExhausted(String),
+
+    #[error("Request cancelled")]
+    Cancelled,
 }

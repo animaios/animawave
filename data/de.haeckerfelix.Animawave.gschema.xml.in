@@ -1,8 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <schemalist>
   <schema path="@PATH_ID@/" id="@APP_ID@" gettext-domain="@PKGNAME@">
     <key name="api-lookup-domain" type="s">
       <default>"all.api.radio-browser.info"</default>
+      <summary>RadioBrowser API lookup domain</summary>
+      <description
+            >DNS domain used to discover available RadioBrowser API servers.</description>
+    </key>
+    <key name="api-timeout" type="i">
+      <default>30</default>
+      <summary>API request timeout (seconds)</summary>
+      <description
+            >Maximum time to wait for an API request to complete, including connection, DNS resolution, and response download.</description>
+    </key>
+    <key name="api-connect-timeout" type="i">
+      <default>10</default>
+      <summary>API connection timeout (seconds)</summary>
+      <description
+            >Maximum time to wait for a TCP connection to be established.</description>
+    </key>
+    <key name="api-retry-count" type="i">
+      <default>3</default>
+      <summary>API request retry count</summary>
+      <description
+            >Number of times to retry a failed API request before giving up. Set to 0 to disable retries.</description>
     </key>
     <key name="library-sorting" type="s">
       <default>"name"</default>

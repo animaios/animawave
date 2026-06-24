@@ -19,6 +19,9 @@
 pub enum Key {
     // API
     ApiLookupDomain,
+    ApiTimeout,
+    ApiConnectTimeout,
+    ApiRetryCount,
 
     // Library
     LibrarySorting,
