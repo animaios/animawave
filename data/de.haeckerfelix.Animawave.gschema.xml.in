@@ -70,5 +70,11 @@
     <key name="notifications" type="b">
       <default>false</default>
     </key>
+    <key name="buffer-duration" type="i">
+      <default>6</default>
+      <summary>Buffer duration (seconds)</summary>
+      <description
+            >How much audio to buffer before playback starts. Higher values reduce rebuffering on unstable connections.</description>
+    </key>
   </schema>
 </schemalist>

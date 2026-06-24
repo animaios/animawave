@@ -46,4 +46,7 @@ pub enum Key {
 
     BackgroundPlayback,
     Notifications,
+
+    // Buffer
+    BufferDuration,
 }

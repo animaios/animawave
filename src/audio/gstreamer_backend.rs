@@ -26,6 +26,14 @@ use gstreamer_audio::{StreamVolume, StreamVolumeFormat};
 use gtk::glib;
 
 use crate::audio::SwPlaybackState;
+use crate::settings::{settings_manager, Key};
+
+/// Read the configured buffer duration from settings and return it in nanoseconds.
+/// Clamped to a safe range of 1–60 seconds to prevent invalid values.
+fn buffer_duration_ns() -> u64 {
+    let seconds = settings_manager::integer(Key::BufferDuration).clamp(1, 60);
+    seconds as u64 * 1_000_000_000
+}
 
 #[rustfmt::skip]
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +98,7 @@ impl GstreamerBackend {
 
         // create gstreamer pipeline
         let pipeline_launch = format!(
-            "uridecodebin name=uridecodebin use-buffering=true buffer-duration=6000000000 ! audioconvert name=audioconvert ! tee name=tee ! queue ! {audiosink} name={audiosink}"
+            "uridecodebin name=uridecodebin use-buffering=true ! audioconvert name=audioconvert ! tee name=tee ! queue ! {audiosink} name={audiosink}"
         );
         let pipeline = gstreamer::parse::launch(&pipeline_launch)
             .expect("Unable to create gstreamer pipeline");
@@ -163,6 +171,10 @@ impl GstreamerBackend {
 
         // dynamically link uridecodebin element with audioconvert element
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
+
+        // Set buffer duration from settings (clamped to safe range)
+        uridecodebin.set_property("buffer-duration", buffer_duration_ns());
+
         let audioconvert = self.pipeline.by_name("audioconvert").unwrap();
         uridecodebin.connect_pad_added(clone!(
             #[weak]
@@ -312,6 +324,10 @@ impl GstreamerBackend {
 
         debug!("Set new source URI...");
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
+
+        // Apply buffer duration from settings (clamped to safe range)
+        uridecodebin.set_property("buffer-duration", buffer_duration_ns());
+
         uridecodebin.set_property("uri", source);
     }
 

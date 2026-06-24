@@ -33,6 +33,8 @@ mod imp {
         background_playback_switch: TemplateChild<gtk::Switch>,
         #[template_child]
         notifications_switch: TemplateChild<gtk::Switch>,
+        #[template_child]
+        buffer_duration_row: TemplateChild<adw::SpinRow>,
 
         // Recording
         #[template_child]
@@ -72,6 +74,12 @@ mod imp {
                 Key::Notifications,
                 &*self.notifications_switch,
                 "active",
+            );
+
+            settings_manager::bind_property(
+                Key::BufferDuration,
+                &*self.buffer_duration_row,
+                "value",
             );
 
             // Recording
@@ -127,6 +135,15 @@ mod imp {
 
     #[gtk::template_callbacks]
     impl SwPreferencesDialog {
+        #[template_callback]
+        fn on_buffer_duration_output(row: &adw::SpinRow) -> bool {
+            let value = row.value() as u32;
+            let text = ni18n_f("{} sec", "{} sec", value, &[&value.to_string()]);
+            row.set_text(&text);
+            row.set_width_chars(text.len() as i32);
+            true
+        }
+
         pub fn select_recording_save_directory(&self) {
             let parent = self
                 .obj()
