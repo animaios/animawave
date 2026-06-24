@@ -26,6 +26,7 @@ use gstreamer_audio::{StreamVolume, StreamVolumeFormat};
 use gtk::glib;
 
 use crate::audio::SwPlaybackState;
+use crate::settings::{settings_manager, Key};
 
 #[rustfmt::skip]
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +91,7 @@ impl GstreamerBackend {
 
         // create gstreamer pipeline
         let pipeline_launch = format!(
-            "uridecodebin name=uridecodebin use-buffering=true buffer-duration=6000000000 ! audioconvert name=audioconvert ! tee name=tee ! queue ! {audiosink} name={audiosink}"
+            "uridecodebin name=uridecodebin use-buffering=true ! audioconvert name=audioconvert ! tee name=tee ! queue ! {audiosink} name={audiosink}"
         );
         let pipeline = gstreamer::parse::launch(&pipeline_launch)
             .expect("Unable to create gstreamer pipeline");
@@ -163,6 +164,14 @@ impl GstreamerBackend {
 
         // dynamically link uridecodebin element with audioconvert element
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
+
+        // Set buffer duration from settings (convert seconds to nanoseconds)
+        let buffer_duration_s = settings_manager::integer(Key::BufferDuration);
+        uridecodebin.set_property(
+            "buffer-duration",
+            (buffer_duration_s as u64) * 1_000_000_000,
+        );
+
         let audioconvert = self.pipeline.by_name("audioconvert").unwrap();
         uridecodebin.connect_pad_added(clone!(
             #[weak]
@@ -312,6 +321,14 @@ impl GstreamerBackend {
 
         debug!("Set new source URI...");
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
+
+        // Apply buffer duration from settings (convert seconds to nanoseconds)
+        let buffer_duration_s = settings_manager::integer(Key::BufferDuration);
+        uridecodebin.set_property(
+            "buffer-duration",
+            (buffer_duration_s as u64) * 1_000_000_000,
+        );
+
         uridecodebin.set_property("uri", source);
     }
 
