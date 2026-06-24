@@ -28,6 +28,13 @@ use gtk::glib;
 use crate::audio::SwPlaybackState;
 use crate::settings::{settings_manager, Key};
 
+/// Read the configured buffer duration from settings and return it in nanoseconds.
+/// Clamped to a safe range of 1–60 seconds to prevent invalid values.
+fn buffer_duration_ns() -> u64 {
+    let seconds = settings_manager::integer(Key::BufferDuration).clamp(1, 60);
+    seconds as u64 * 1_000_000_000
+}
+
 #[rustfmt::skip]
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                //
@@ -165,12 +172,8 @@ impl GstreamerBackend {
         // dynamically link uridecodebin element with audioconvert element
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
 
-        // Set buffer duration from settings (convert seconds to nanoseconds)
-        let buffer_duration_s = settings_manager::integer(Key::BufferDuration);
-        uridecodebin.set_property(
-            "buffer-duration",
-            (buffer_duration_s as u64) * 1_000_000_000,
-        );
+        // Set buffer duration from settings (clamped to safe range)
+        uridecodebin.set_property("buffer-duration", buffer_duration_ns());
 
         let audioconvert = self.pipeline.by_name("audioconvert").unwrap();
         uridecodebin.connect_pad_added(clone!(
@@ -322,12 +325,8 @@ impl GstreamerBackend {
         debug!("Set new source URI...");
         let uridecodebin = self.pipeline.by_name("uridecodebin").unwrap();
 
-        // Apply buffer duration from settings (convert seconds to nanoseconds)
-        let buffer_duration_s = settings_manager::integer(Key::BufferDuration);
-        uridecodebin.set_property(
-            "buffer-duration",
-            (buffer_duration_s as u64) * 1_000_000_000,
-        );
+        // Apply buffer duration from settings (clamped to safe range)
+        uridecodebin.set_property("buffer-duration", buffer_duration_ns());
 
         uridecodebin.set_property("uri", source);
     }
