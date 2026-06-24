@@ -3,6 +3,10 @@
 ## What Is Animawave?
 Animawave is an open-source GTK4/libadwaita internet radio player for 50,000+ stations from radio-browser.info.
 
+**Agent Readiness:** This file contains two kinds of guidance:
+- **Universal rules** — project structure, branching, architecture, and security patterns that apply regardless of what tooling you have.
+- **Workflow recommendations** — tool-specific tips that are helpful when the relevant tools are available, but not required to complete tasks. Use whatever tools you have access to.
+
 ## Repository Structure
 ```
 animawave/
@@ -38,14 +42,16 @@ ninja -C build
 ./build-aux/checks.sh potfiles     # i18n
 ```
 
-## Tool Usage
-Agents MUST use structured tools:
-- **Explore**: `search_symbols`, `get_file_outline`, `get_call_hierarchy`
-- **Impact**: `get_blast_radius`, `find_similar_symbols`
-- **Discover**: `grep` (regex), `search_text` (strings)
-- **Build/test**: `terminal` with `cd=/home/vi/animawave`
+## Tooling Tips (Optional)
 
-**Avoid**: Repeated `read_file` calls — cache misses waste cycles.
+When available, structured analysis tools are more efficient than raw file reads:
+
+- **Exploration**: Search for symbols, get file outlines, inspect call hierarchies
+- **Impact analysis**: Check blast radius before making changes
+- **Code discovery**: Use regex or text search for string literals
+- **Build/test**: Use a terminal or shell at the project root
+
+**Note**: Repeated raw file reads can be wasteful. Prefer targeted lookups when your toolset supports them.
 
 ## ❗ Agent SOP — The Delegate-Verify Loop
 
@@ -57,17 +63,17 @@ Agents MUST use structured tools:
 3. Break tasks into minimal, verifiable increments
 
 ### Step 2: Delegate One Step
-- Pass complete context: `{repo: "animawave", target_symbol: "src/ui/window.rs", tools: ["get_call_hierarchy", "edit_file"]}`
-- Never bundle multiple changes into one delegate
+- Pass complete context — the delegate or sub-agent is stateless and needs full context about repo structure, target symbols, and expected outcome
+- Never bundle multiple changes into a single delegation
 
 ### Step 3: ❗ VERIFY THE RESULT
 Agents frequently claim success while silently failing to edit files.
 
 **After every delegated task:**
-1. **Read the actual modified file** — use `grep` or `read_file` to confirm expected code is present
-2. Check git status — `git --no-pager diff 10` before committing
-3. Validate blast radius — tools like `get_blast_radius` or `find_references`
-4. **Register edits** — `register_edit({repo: "animawave", file_paths: [...]})`
+1. **Read the actual modified file** — confirm the expected code is present (e.g. via `grep` or reading file contents)
+2. Check git status — `git --no-pager diff` before committing
+3. Validate — verify downstream impact matches expectations (e.g. check references or call sites)
+4. **Register edits** — update any indexes or caches your tooling requires
 5. Test — run expected functionality plus adjacent components
 
 > ❗ Lesson learned — CoverLoader: A subagent edited `api/cover_loader.rs` to fix cache eviction logic, then reported success. No edits were actually applied — the agent claimed it had updated the code when it had only read it. Only `read_file` confirmed the file was unchanged. Always verify the real file — never trust a delegate's self-report.
